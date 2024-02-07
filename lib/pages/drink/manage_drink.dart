@@ -5,14 +5,14 @@ import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/pages/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+class ManageDrink extends StatefulWidget {
+  const ManageDrink({super.key});
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+  State<ManageDrink> createState() => _ManageDrinkState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _ManageDrinkState extends State<ManageDrink> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,12 +22,12 @@ class _SettingPageState extends State<SettingPage> {
             Container(
               margin: EdgeInsets.only(
                   top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-              // child: CustomText(
-              //   text: menuController.activeItem,
-              //   size: 24,
-              //   color: AppColor.secondary,
-              //   weight: FontWeight.bold,
-              // ),
+              child: CustomText(
+                text: menuController.activeItem,
+                size: 24,
+                color: AppColor.secondary,
+                weight: FontWeight.bold,
+              ),
             )
           ],
         ),

@@ -1,33 +1,37 @@
+import 'package:flutter/material.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/pages/routing/routes.dart';
-import 'package:flutter/material.dart';
 
-class MenuController {
-  var activeItem = DashBoardPageRoute;
-  var hoverItem = "";
+class MenuController extends ChangeNotifier {
+  String _activeItem = drinkPageRoute;
+  String _hoverItem = "";
 
-  changeActiveItem(String itemName) {
-    activeItem = itemName;
+  String get activeItem => _activeItem;
+
+  set activeItem(String itemName) {
+    _activeItem = itemName;
+    notifyListeners();
   }
 
-  onHover(String itemName) {
-    if (!isActive(itemName)) {
-      hoverItem = itemName;
-    }
+  String get hoverItem => _hoverItem;
+
+  set hoverItem(String itemName) {
+    _hoverItem = itemName;
+    notifyListeners();
   }
 
-  isActive(String itemName) => activeItem == itemName;
-  isHover(String itemName) => hoverItem == itemName;
+  bool isActive(String itemName) => _activeItem == itemName;
+  bool isHover(String itemName) => _hoverItem == itemName;
 
   Widget returnIconFor(String itemName) {
     switch (itemName) {
-      case DashBoardPageRoute:
+      case dashBoardPageRoute:
         return _customIcon(Icons.widgets, itemName);
-      case DrinkPageRoute:
+      case drinkPageRoute:
         return _customIcon(Icons.free_breakfast, itemName);
-      case SettingPageRoute:
+      case settingPageRoute:
         return _customIcon(Icons.settings, itemName);
-      case AuthenthicationPageRoute:
+      case authenthicationPageRoute:
         return _customIcon(Icons.logout, itemName);
       default:
         return _customIcon(Icons.logout, itemName);
@@ -48,4 +52,24 @@ class MenuController {
       color: isHover(itemName) ? Colors.grey[800] : Colors.grey[400],
     );
   }
+}
+
+class SideBarState extends ChangeNotifier {
+  String itemName = '';
+
+  String get activeItem => itemName;
+  String get hoverItem => itemName;
+
+  set activeItem(String item) {
+    itemName = item;
+    notifyListeners();
+  }
+
+  set hoverItem(String item) {
+    itemName = item;
+    notifyListeners();
+  }
+
+  bool isActive(String itemName) => activeItem == itemName;
+  bool isHover(String itemName) => hoverItem == itemName;
 }

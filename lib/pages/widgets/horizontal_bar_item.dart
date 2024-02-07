@@ -19,8 +19,8 @@ class HorizontalBarItem extends StatelessWidget {
       onTap: onTap,
       onHover: (value) {
         value
-            ? menuController.onHover(itemName)
-            : menuController.onHover("not hovering");
+            ? menuController.isHover(itemName)
+            : menuController.isHover("not hovering");
       },
       child: Container(
         color: menuController.isHover(itemName)

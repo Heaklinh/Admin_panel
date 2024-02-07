@@ -63,7 +63,10 @@ class _CardLargeScreenState extends State<CardLargeScreen> {
                     ),
                     Text(
                       "Add Drink",
-                      style: TextStyle(fontSize: 16, color: Colors.grey[400]),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[400],
+                      ),
                     ),
                   ],
                 ),

@@ -1,4 +1,4 @@
-import 'package:admin_panel/pages/dashboard/widgets/card_small_screen.dart';
+import 'package:admin_panel/pages/drink/widgets/card_small_screen.dart';
 import 'package:flutter/material.dart';
 
 class SmallScreen extends StatelessWidget {
@@ -6,9 +6,6 @@ class SmallScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //constraints: const BoxConstraints.expand(),
-      child: const CardSmallScreen(),
-    );
+    return const CardSmallScreen();
   }
 }
