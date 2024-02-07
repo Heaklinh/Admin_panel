@@ -1,7 +1,5 @@
-import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/large_screen.dart';
-import 'package:admin_panel/pages/widgets/small_screen.dart';
 import 'package:admin_panel/pages/widgets/top_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
