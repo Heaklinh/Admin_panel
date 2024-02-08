@@ -1,6 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/services/admin_services.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CardLargeScreen extends StatefulWidget {
   const CardLargeScreen({super.key});
@@ -10,24 +15,45 @@ class CardLargeScreen extends StatefulWidget {
 }
 
 class _CardLargeScreenState extends State<CardLargeScreen> {
+  AdminServices adminServices = AdminServices();
+
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController quantityController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  File? pickedImage;
+  Uint8List webImage = Uint8List(8);
 
   @override
   void dispose() {
     productNameController.dispose();
     descriptionController.dispose();
     priceController.dispose();
-    quantityController.dispose();
     super.dispose();
   }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      Navigator.of(context).pop();
+      adminServices.addProduct(
+        context: context,
+        name: productNameController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        image: pickedImage ?? File('a'),
+      );
+    }
+  }
+
+  Future<void> selectImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final Uint8List f = await image.readAsBytes();
+      setState(() {
+        webImage = f;
+        pickedImage = File('a');
+      });
     }
   }
 
@@ -127,15 +153,15 @@ class _CardLargeScreenState extends State<CardLargeScreen> {
                   ),
                   // Add Product Quantity
                   TextFormField(
-                    controller: quantityController,
-                    decoration: const InputDecoration(labelText: 'Quantity'),
+                    controller: priceController,
+                    decoration: const InputDecoration(labelText: 'Price'),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a product quantity';
+                        return 'Please enter a product price';
                       }
-                      if (int.tryParse(value) == null) {
-                        return 'Please enter a valid quantity';
+                      if (double.tryParse(value) == null) {
+                        return 'Please enter a valid price';
                       }
                       return null;
                     },
@@ -143,33 +169,41 @@ class _CardLargeScreenState extends State<CardLargeScreen> {
                   const SizedBox(height: 24),
 
                   // Add Image
-                  DottedBorder(
-                    dashPattern: const [10, 4],
-                    strokeCap: StrokeCap.round,
-                    child: Container(
-                      width: dialogWidth / 2,
-                      height: 100,
-                      decoration: ShapeDecoration(
-                        shape: BeveledRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  GestureDetector(
+                    onTap: selectImage,
+                    child: DottedBorder(
+                      dashPattern: const [10, 4],
+                      strokeCap: StrokeCap.round,
+                      child: Container(
+                        width: dialogWidth / 2,
+                        height: 100,
+                        decoration: ShapeDecoration(
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.upload_file,
-                            size: 24,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            "Upload Image Here",
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[800]),
-                          ),
-                        ],
+                        child: pickedImage != null
+                            ? Image.file(
+                                pickedImage!,
+                                fit: BoxFit.fill,
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.upload_file,
+                                    size: 24,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    "Upload Image Here",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.grey[800]),
+                                  ),
+                                ],
+                              ),
                       ),
                     ),
                   ),
