@@ -1,3 +1,4 @@
+import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/large_screen.dart';
 import 'package:admin_panel/pages/widgets/top_nav_bar.dart';
@@ -38,27 +39,24 @@ class _SiteLayoutState extends State<SiteLayout> {
   List<DrawerItem> drawerItems = [
     DrawerItem(
       text: 'Home',
-      icon: Icon(Icons.home),
+      icon: const Icon(Icons.home),
     ),
     DrawerItem(
       text: 'Drink',
-      icon: Icon(Icons.free_breakfast),
+      icon: const Icon(Icons.free_breakfast),
     ),
     DrawerItem(
       text: 'Setting',
-      icon: Icon(Icons.settings),
+      icon: const Icon(Icons.settings),
     ),
     DrawerItem(
       text: 'Logout',
-      icon: Icon(Icons.logout),
+      icon: const Icon(Icons.logout),
     ),
   ];
   final List<Widget> _widgetOptions = <Widget>[
     Text('Index 0'),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
+    const ManageDrink(),
     Text(
       'Index 2: School',
       style: optionStyle,
