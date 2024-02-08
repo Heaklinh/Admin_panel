@@ -1,3 +1,6 @@
+import 'package:admin_panel/pages/drink/manage_drink.dart';
+import 'package:flutter/material.dart';
+
 const rootRoute = '/';
 
 const dashBoardDisplayName = "DashBoard";
@@ -17,3 +20,22 @@ List sideBarItems = [
   settingPageRoute,
   authenthicationPageRoute
 ];
+
+Route<dynamic> generateRoute(RouteSettings routeSettings) {
+  switch (routeSettings.name) {
+    case ManageDrink.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings, 
+        builder: (_) => const ManageDrink(),
+      );
+    default:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const Scaffold(
+          body: Center(
+            child: Text('Screen does not exist'),
+          ),
+        ),
+      );
+  }
+}
