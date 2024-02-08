@@ -24,7 +24,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
       backgroundColor: Colors.transparent,
       title: Row(
         children: [
-          Visibility(
+          const Visibility(
             child: CustomText(
               text: "Robot cafe",
               size: 16,
@@ -36,7 +36,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
           Stack(
             children: [
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.notifications,
                   color: AppColor.secondary,
                 ),
@@ -59,7 +59,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             ],
           ),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
               color: AppColor.secondary,
             ),
@@ -73,7 +73,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
           const SizedBox(
             width: 24,
           ),
-          CustomText(
+          const CustomText(
             text: "Admin",
             size: 12,
             color: AppColor.secondary,
@@ -92,7 +92,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
               margin: const EdgeInsets.all(2),
               child: CircleAvatar(
                 backgroundColor: AppColor.secondary.withOpacity(0.4),
-                child: Icon(
+                child: const Icon(
                   Icons.person,
                   color: AppColor.secondary,
                 ),

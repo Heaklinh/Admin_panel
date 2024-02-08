@@ -1,8 +1,6 @@
-import 'package:admin_panel/constants/color.dart';
+
 import 'package:admin_panel/pages/drink/widgets/card_large_screen.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
-import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/pages/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget {
