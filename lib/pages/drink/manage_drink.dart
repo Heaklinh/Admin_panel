@@ -6,6 +6,7 @@ import 'package:admin_panel/pages/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
 
 class ManageDrink extends StatefulWidget {
+  static const routeName = "/manage_drink";
   const ManageDrink({super.key});
 
   @override
