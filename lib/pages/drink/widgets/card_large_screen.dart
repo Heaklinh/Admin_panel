@@ -52,7 +52,7 @@ class _CardLargeScreenState extends State<CardLargeScreen> {
       final Uint8List f = await image.readAsBytes();
       setState(() {
         webImage = f;
-        pickedImage = File('a');
+        pickedImage = File(image.path);
       });
     }
   }
