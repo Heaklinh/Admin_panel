@@ -1,3 +1,4 @@
+import 'package:admin_panel/pages/drink/add_product_page.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings, 
         builder: (_) => const ManageDrink(),
+      );
+    case AddProductPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings, 
+        builder: (_) => AddProductPage(onProductAdded: () {}),
       );
     default:
       return MaterialPageRoute(

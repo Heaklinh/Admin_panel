@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String uri = 'http://172.23.33.80:3000';
+String uri = 'http://192.168.100.31:3000';
 
 class AppColor {
   static const primary = Color(0xFFFF4438);

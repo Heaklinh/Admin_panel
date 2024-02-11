@@ -1,4 +1,5 @@
 
+import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:admin_panel/pages/drink/widgets/card_large_screen.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,11 @@ class _SettingPageState extends State<SettingPage> {
         const SizedBox(
           height: 24,
         ),
+        // const Expanded(
+        //   child: CardLargeScreen(),
+        // )
         const Expanded(
-          child: CardLargeScreen(),
+          child: ManageDrink(),
         )
       ],
     );
