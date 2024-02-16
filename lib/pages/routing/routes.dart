@@ -1,5 +1,7 @@
 import 'package:admin_panel/pages/drink/add_product_page.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
+import 'package:admin_panel/pages/orders/current_order_screen.dart';
+import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
 import 'package:flutter/material.dart';
 
 const rootRoute = '/';
@@ -24,6 +26,11 @@ List sideBarItems = [
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
+    case SideBar.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings, 
+        builder: (_) => const SideBar(),
+      );
     case ManageDrink.routeName:
       return MaterialPageRoute(
         settings: routeSettings, 
@@ -33,6 +40,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings, 
         builder: (_) => AddProductPage(onProductAdded: () {}),
+      );
+    case CurrentOrderScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings, 
+        builder: (_) => const CurrentOrderScreen(),
       );
     default:
       return MaterialPageRoute(
