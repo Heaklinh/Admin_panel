@@ -5,7 +5,6 @@ import 'package:admin_panel/pages/drink/add_product_page.dart';
 import 'package:admin_panel/pages/drink/widgets/single_product.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/pages/widgets/side_bar.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +51,7 @@ class _ManageDrinkState extends State<ManageDrink> {
     const minCrossAxisCount = 2; // Minimum number of columns
 
     if (screenWidth > 779) {
-      final calculatedCount = (screenWidth / defaultWidth / 1.25).floor();
+      final calculatedCount = (screenWidth / defaultWidth / 1.3).floor();
       return calculatedCount > minCrossAxisCount
           ? calculatedCount
           : minCrossAxisCount;
@@ -72,9 +71,9 @@ class _ManageDrinkState extends State<ManageDrink> {
           children: [
             Container(
               margin: EdgeInsets.only(
-                  top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-              child: CustomText(
-                text: menuController.activeItem,
+                top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
+              child: const CustomText(
+                text: "Drinks",
                 size: 24,
                 color: AppColor.secondary,
                 weight: FontWeight.bold,

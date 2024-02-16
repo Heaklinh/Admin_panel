@@ -1,5 +1,5 @@
-import 'package:admin_panel/layout.dart';
 import 'package:admin_panel/pages/routing/routes.dart';
+import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const SiteLayout(title: '',),
+      home: const SideBar(),
     );
   }
 }
