@@ -1,9 +1,10 @@
-
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:admin_panel/constants/error_handling.dart';
 import 'package:admin_panel/constants/global_variables.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
+import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,14 @@ class AdminServices {
     required String description,
     required double price,
     required File image,
+    required VoidCallback onProductAdded,
   }) async {
     try {
       final cloudinary = CloudinaryPublic('dsx7eoho1', 'jibs0s0t');
-      CloudinaryResponse cloudinaryRes  = await cloudinary.uploadFile(
-            CloudinaryFile.fromFile(image.path, folder: name),
-          );
-      String imageUrls = cloudinaryRes .secureUrl;
+      CloudinaryResponse cloudinaryRes = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(image.path, folder: name),
+      );
+      String imageUrls = cloudinaryRes.secureUrl;
 
       Product product = Product(
         name: name,
@@ -44,11 +46,93 @@ class AdminServices {
         context: context,
         onSuccess: () {
           showSnackBar(context, 'Product Added Successfully!');
+          onProductAdded();
           Navigator.pop(context);
         },
       );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+    List<Product> productList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-products'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (!context.mounted) return productList;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              productList.add(
+                Product.fromJson(
+                  jsonEncode(jsonDecode(res.body)[i]),
+                ),
+              );
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return productList;
+  }
+
+  void deleteProduct(
+      {required BuildContext context,
+      required Product product,
+      required VoidCallback onSuccess}) async {
+    try {
+      http.Response res =
+          await http.post(Uri.parse('$uri/admin/delete-product'),
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode({
+                'id': product.id,
+              }));
+      if (!context.mounted) return;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            onSuccess();
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<List<Order>> fetchAllOrders(BuildContext context) async {
+    List<Order> orderList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-orders'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (!context.mounted) return orderList;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              orderList.add(
+                Order.fromJson(
+                  jsonEncode(jsonDecode(res.body)[i]),
+                ),
+              );
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return orderList;
   }
 }
