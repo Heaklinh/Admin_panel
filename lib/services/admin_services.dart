@@ -1,10 +1,10 @@
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:admin_panel/constants/error_handling.dart';
 import 'package:admin_panel/constants/global_variables.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
+import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +21,10 @@ class AdminServices {
   }) async {
     try {
       final cloudinary = CloudinaryPublic('dsx7eoho1', 'jibs0s0t');
-      CloudinaryResponse cloudinaryRes  = await cloudinary.uploadFile(
-            CloudinaryFile.fromFile(image.path, folder: name),
-          );
-      String imageUrls = cloudinaryRes .secureUrl;
+      CloudinaryResponse cloudinaryRes = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(image.path, folder: name),
+      );
+      String imageUrls = cloudinaryRes.secureUrl;
 
       Product product = Product(
         name: name,
@@ -106,5 +106,33 @@ class AdminServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<List<Order>> fetchAllOrders(BuildContext context) async {
+    List<Order> orderList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-orders'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (!context.mounted) return orderList;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              orderList.add(
+                Order.fromJson(
+                  jsonEncode(jsonDecode(res.body)[i]),
+                ),
+              );
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return orderList;
   }
 }
