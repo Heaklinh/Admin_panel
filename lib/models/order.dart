@@ -11,6 +11,7 @@ class Order {
   final int orderDate;
   final bool? isPaid;
   final double totalPrice;
+  final int deletedDate;
 
   Order({
     required this.id,
@@ -23,20 +24,51 @@ class Order {
     required this.orderDate,
     required this.isPaid,
     required this.totalPrice,
+    required this.deletedDate
   });
+
+  Order copyWith({
+    String? id,
+    String? userID,
+    String? productID,
+    int? quantity,
+    int? queue,
+    int? orderNumber,
+    int? status,
+    int? orderDate,
+    bool? isPaid,
+    double? totalPrice,
+    int? deleteDate
+  }) {
+    return Order(
+        id: id ?? this.id,
+        userID: userID ?? this.userID,
+        productID: productID ?? this.productID,
+        quantity: quantity ?? this.quantity,
+        queue: queue ?? this.queue,
+        orderNumber: orderNumber ?? this.orderNumber,
+        status: status ?? this.status,
+        orderDate: orderDate ?? this.orderDate,
+        isPaid: isPaid ?? this.isPaid,
+        totalPrice: totalPrice ?? this.totalPrice,
+        deletedDate: deletedDate,
+        );
+
+  }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'userID': userID,
       'productID': productID,
-      'quantity' : quantity,
+      'quantity': quantity,
       'queue': queue,
       'status': status,
       'orderDate': orderDate,
       'totalPrice': totalPrice,
       'orderNumber': orderNumber,
       'isPaid': isPaid,
+      'deletedDate' : deletedDate,
     };
   }
 
@@ -52,6 +84,7 @@ class Order {
       orderDate: map['orderDate'] ?? '',
       totalPrice: map['totalPrice']?.toDouble() ?? 0.0,
       isPaid: null,
+      deletedDate: map['deletedDate'] ?? '',
     );
   }
 

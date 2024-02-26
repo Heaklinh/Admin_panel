@@ -18,7 +18,7 @@ class CurrentOrderScreen extends StatefulWidget {
 
 class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
   List<Order>? orders;
-  List<Product>? products;
+  List<Product>? productList;
   final AdminServices adminServices = AdminServices();
 
   @override
@@ -29,7 +29,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
   }
 
   fetchAllProducts() async {
-    products = await adminServices.fetchAllProducts(context);
+    productList = await adminServices.fetchAllProducts(context);
     setState(() {});
   }
 
@@ -81,7 +81,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                orders == null || products == null
+                orders == null || productList == null
                     ? const Loader()
                     : GridView.builder(
                         shrinkWrap: true,
@@ -92,28 +92,52 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
                               context), // Calculate the cross axis count dynamically
                         ),
                         itemBuilder: (context, index) {
+                          bool found = false;
                           final orderData = orders![index];
-                          final matchingProduct = products!.firstWhere(
-                            (product) => product.id == orderData.productID,
-                          );
+                          // final matchingProduct = products!.firstWhere(
+                          //   (product) => product.id == orderData.productID,
+                          // );
+                          late Product productFound;
+                          for (int i = 0; i < productList!.length; i++) {
+                            final products = productList![i];
+                            if (products.id == orderData.productID) {
+                              productFound = products;
+                              found = true;
+                              break;
+                            }
+                            found = false;
+                          }
+
+                          if (!found) {
+                            productFound = Product(
+                              id: orderData.productID,
+                              name: 'Deleted Product',
+                              price: 0,
+                              description: 'Deleted Product',
+                              image:
+                                  'https://res.cloudinary.com/dsx7eoho1/image/upload/v1708670880/Product/e4nbm5zqfq8cbkkvnat2.png',
+                            );
+                          }
 
                           return Column(
                             children: [
                               SizedBox(
                                 height: 132,
                                 child: SingleProduct(
-                                  image: matchingProduct.image, 
+                                  image: productFound.image,
                                 ),
                               ),
                               Container(
                                 width: 180,
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        matchingProduct.name, // Use matchingProduct instead of product
+                                        productFound
+                                            .name, // Use matchingProduct instead of product
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                       ),
@@ -123,8 +147,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
                               ),
                             ],
                           );
-                        }
-                      ),
+                        }),
               ],
             ),
           ),
