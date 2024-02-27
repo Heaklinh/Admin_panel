@@ -11,8 +11,8 @@ import 'package:image_picker/image_picker.dart';
 
 class AddProductPage extends StatefulWidget {
   static const String routeName = "/add_product_page";
-  
-  final VoidCallback onProductAdded; 
+
+  final VoidCallback onProductAdded;
   const AddProductPage({super.key, required this.onProductAdded});
 
   @override
@@ -20,60 +20,102 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-
   AdminServices adminServices = AdminServices();
 
-    final TextEditingController productNameController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
-    final TextEditingController priceController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+  final TextEditingController productNameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
-    File? pickedImage;
-    Uint8List webImage = Uint8List(8);
+  File? pickedImage;
+  Uint8List webImage = Uint8List(8);
 
-    void submitForm() {
-      if (formKey.currentState!.validate()) {
-        adminServices.addProduct(
-          context: context,
-          name: productNameController.text,
-          description: descriptionController.text,
-          price: double.parse(priceController.text),
-          image: pickedImage ?? File('a'),
-          onProductAdded: widget.onProductAdded,
+  void addProduct() {
+    submitForm();
+    const Duration timeoutDuration =
+        Duration(seconds: 5); // Adjust the timeout duration as needed
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FutureBuilder(
+          future: Future.delayed(timeoutDuration),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              // Execution completed within the timeout duration
+              Navigator.pop(context); // Close the dialog
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              // Still waiting for the execution to complete
+              return const AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('Adding product...'),
+                  ],
+                ),
+              );
+            } else {
+              // Timeout occurred
+              Navigator.pop(context); // Close the dialog
+              // Handle timeout, you can show an error message or take appropriate action
+              debugPrint('Save changes timed out');
+            }
+            return Container(); // Placeholder, you can customize the UI based on your needs
+          },
         );
-      }
-    }
+      },
+    );
+  }
 
-    Future<void> selectImage() async {
-      if (!kIsWeb) {
-        final ImagePicker picker = ImagePicker();
-        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-        if (image != null) {
-          var selected = File(image.path);
-          setState(() {
-            pickedImage = selected;
-          });
-        } else {
-          if (!context.mounted) return;
-          showSnackBar(context, 'No image has been selected');
-        }
-      } else if (kIsWeb) {
-        final ImagePicker picker = ImagePicker();
-        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-        if (image != null) {
-          final Uint8List f = await image.readAsBytes();
-          setState((){
-            webImage = f;
-            pickedImage = File(image.path);
-          });
-        } else {
-          if (!context.mounted) return;
-          showSnackBar(context, 'No image has been selected');
-        }
-      } else {
-        showSnackBar(context, 'Something when wrong');
-      }
+  void submitForm() {
+    if (pickedImage == null) {
+      showSnackBar(context, 'Image is require');
+      return;
     }
+    if (formKey.currentState!.validate()) {
+      adminServices.addProduct(
+        context: context,
+        name: productNameController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        image: pickedImage ?? File(''),
+        onProductAdded: widget.onProductAdded,
+      );
+    }
+  }
+
+  Future<void> selectImage() async {
+    if (!kIsWeb) {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          pickedImage = selected;
+        });
+      } else {
+        if (!context.mounted) return;
+        showSnackBar(context, 'No image has been selected');
+      }
+    } else if (kIsWeb) {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        final Uint8List f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          pickedImage = File(image.path);
+        });
+      } else {
+        if (!context.mounted) return;
+        showSnackBar(context, 'No image has been selected');
+      }
+    } else {
+      showSnackBar(context, 'Something when wrong');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +124,7 @@ class _AddProductPageState extends State<AddProductPage> {
       surfaceTintColor: Colors.transparent,
       backgroundColor: AppColor.white,
       title: const Text('Add Product'),
-      shape:
-          BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
       content: SingleChildScrollView(
         child: Form(
           key: formKey,
@@ -122,8 +163,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 Text(
                                   "Upload Image Here",
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[800]),
+                                      fontSize: 12, color: Colors.grey[800]),
                                 ),
                               ],
                             )
@@ -156,8 +196,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 height: 10,
               ),
               // Add Product Quantity
-              CustomTextField(
-                  controller: priceController, hintText: 'Price'),
+              CustomTextField(controller: priceController, hintText: 'Price'),
               const SizedBox(height: 10),
 
               // ElevatedButton(
@@ -176,7 +215,9 @@ class _AddProductPageState extends State<AddProductPage> {
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: submitForm,
+          onPressed: () {
+            addProduct();
+          },
           child: const Text('Add'),
         ),
       ],

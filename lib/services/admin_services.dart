@@ -22,7 +22,7 @@ class AdminServices {
     try {
       final cloudinary = CloudinaryPublic('dsx7eoho1', 'jibs0s0t');
       CloudinaryResponse cloudinaryRes = await cloudinary.uploadFile(
-        CloudinaryFile.fromFile(image.path, folder: name),
+        CloudinaryFile.fromFile(image.path, folder: 'Product'),
       );
       String imageUrls = cloudinaryRes.secureUrl;
 
@@ -47,6 +47,7 @@ class AdminServices {
         onSuccess: () {
           showSnackBar(context, 'Product Added Successfully!');
           onProductAdded();
+          Navigator.pop(context);
           Navigator.pop(context);
         },
       );
