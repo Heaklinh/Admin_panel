@@ -65,38 +65,28 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             ),
             onPressed: () {},
           ),
-          Container(
-            width: 1,
-            height: 22,
-            color: Colors.grey,
-          ),
           const SizedBox(
             width: 24,
           ),
-          const CustomText(
-            text: "Admin",
-            size: 12,
-            color: AppColor.secondary,
-            weight: FontWeight.bold,
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(2),
-              margin: const EdgeInsets.all(2),
-              child: CircleAvatar(
-                backgroundColor: AppColor.secondary.withOpacity(0.4),
-                child: const Icon(
-                  Icons.person,
-                  color: AppColor.secondary,
+          SizedBox(
+            height: 36,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: AppColor.secondary.withOpacity(0.1),
+                  child: const Icon(
+                    Icons.person,
+                    color: AppColor.secondary,
+                    size: 24,
+                  ),
                 ),
-              ),
+                const CustomText(
+                  text: "Admin",
+                  size: 12,
+                  color: AppColor.secondary,
+                  weight: FontWeight.bold,
+                ),
+              ],
             ),
           ),
         ],

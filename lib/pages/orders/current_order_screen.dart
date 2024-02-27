@@ -8,15 +8,15 @@ import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
-class CurrentOrderScreen extends StatefulWidget {
-  static const String routeName = "/current_order_screen";
-  const CurrentOrderScreen({super.key});
+class OrderScreen extends StatefulWidget {
+  // static const String routeName = "/current_order_screen";
+  const OrderScreen({super.key});
 
   @override
-  State<CurrentOrderScreen> createState() => _CurrentOrderScreenState();
+  State<OrderScreen> createState() => _OrderScreenState();
 }
 
-class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
+class _OrderScreenState extends State<OrderScreen> {
   List<Order>? orders;
   List<Product>? productList;
   final AdminServices adminServices = AdminServices();
@@ -74,9 +74,6 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
             )
           ],
         ),
-        const SizedBox(
-          height: 24,
-        ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
@@ -129,7 +126,8 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
                               ),
                               Container(
                                 width: 180,
-                                padding: const EdgeInsets.only(left: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,

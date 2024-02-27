@@ -1,6 +1,7 @@
+import 'package:admin_panel/pages/dashboard/dashboard.dart';
 import 'package:admin_panel/pages/drink/add_product_page.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
-import 'package:admin_panel/pages/orders/current_order_screen.dart';
+import 'package:admin_panel/pages/orders/order.dart';
 import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +46,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings, 
         builder: (_) => const CurrentOrderScreen(),
+      );
+    case AdminDashboard.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings, 
+        builder: (_) => const AdminDashboard(),
       );
     default:
       return MaterialPageRoute(

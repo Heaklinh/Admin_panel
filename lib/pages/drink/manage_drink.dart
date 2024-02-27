@@ -47,7 +47,7 @@ class _ManageDrinkState extends State<ManageDrink> {
 
   int calculateCrossAxisCount(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    const defaultWidth = 180; // Default width of each grid item
+    const defaultWidth = 200; // Default width of each grid item
     const minCrossAxisCount = 2; // Minimum number of columns
 
     if (screenWidth > 779) {
@@ -71,7 +71,7 @@ class _ManageDrinkState extends State<ManageDrink> {
           children: [
             Container(
               margin: EdgeInsets.only(
-                top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
+                  top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
               child: const CustomText(
                 text: "Drinks",
                 size: 24,
@@ -81,149 +81,227 @@ class _ManageDrinkState extends State<ManageDrink> {
             )
           ],
         ),
-        const SizedBox(
-          height: 24,
-        ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 18),
-                //   child: DottedBorder(
-                //     dashPattern: const [10, 4],
-                //     strokeCap: StrokeCap.round,
-                //     child: Container(
-                //       width: width / 7,
-                //       height: width / 7,
-                //       decoration: ShapeDecoration(
-                //         shape: BeveledRectangleBorder(
-                //           borderRadius: BorderRadius.circular(12),
-                //         ),
-                //       ),
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           const Icon(
-                //             Icons.folder_open,
-                //             size: 40,
-                //           ),
-                //           const SizedBox(
-                //             height: 15,
-                //           ),
-                //           Text(
-                //             "Add Drink",
-                //             style: TextStyle(
-                //               fontSize: width / 60,
-                //               color: Colors.grey[400],
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-
-                products == null
-                    ? const Loader()
-                    : GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: (products!.length + 1),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: calculateCrossAxisCount(
-                              context), // Calculate the cross axis count dynamically
-                        ),
-                        itemBuilder: (context, index) {
-                          if (index == products!.length) {
-                            return GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AddProductPage(
-                                          onProductAdded: _handleProductAdded);
-                                    });
-                              },
-                              child: Column(
+                if (products == null)
+                  const Loader()
+                else
+                  GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: (products!.length + 1),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: calculateCrossAxisCount(
+                            context), // Calculate the cross axis count dynamically
+                      ),
+                      itemBuilder: (context, index) {
+                        if (index == products!.length) {
+                          return GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AddProductPage(
+                                        onProductAdded: _handleProductAdded);
+                                  });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(16),
+                              height: 200,
+                              decoration: const ShapeDecoration(
+                                color: AppColor.primary,
+                                shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(24),
+                                  ),
+                                ),
+                              ),
+                              width: 180,
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Icon(
+                                    Icons.add,
+                                    size: 40,
+                                    color: AppColor.white,
+                                  ),
                                   SizedBox(
-                                    height: 132,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.black12,
-                                          width: 1.5,
-                                        ),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Container(
-                                        width: 180,
-                                        padding: const EdgeInsets.all(10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(Icons.folder_open,
-                                                size: 40),
-                                            const SizedBox(
-                                              height: 15,
-                                            ),
-                                            Text(
-                                              "Add Drink",
-                                              style: TextStyle(
-                                                overflow: TextOverflow.ellipsis,
-                                                color: Colors.grey[400],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    "Add Drink",
+                                    style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: AppColor.white,
                                     ),
                                   ),
                                 ],
                               ),
-                            );
-                          }
+                            ),
+                          );
+                        }
 
-                          final productData = products![index];
-                          return Column(
+                        final productData = products![index];
+                        return Container(
+                          margin: const EdgeInsets.all(16),
+                          decoration: const ShapeDecoration(
+                            color: AppColor.white,
+                            shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(24),
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 132,
-                                child: SingleProduct(
-                                  image: productData.image,
+                              // Container(
+                              //   decoration: ShapeDecoration(
+                              //       color: AppColor.white,
+                              //       shape: BeveledRectangleBorder(
+                              //           borderRadius: BorderRadius.only(
+                              //               bottomRight: Radius.circular(24)))),
+                              //   height: 200,
+                              //   child: Column(
+                              //     children: [
+                              //       SizedBox(
+                              //         height: 132 / 1.5,
+                              //         child: Image.network(
+                              //           productData.image,
+                              //           fit: BoxFit.fitHeight,
+                              //           width: 180,
+                              //         ),
+                              //       ),
+                              //       const SizedBox(
+                              //         height: 4,
+                              //       ),
+                              //       Expanded(
+                              //         child: Container(
+                              //           width: 180,
+                              //           padding: const EdgeInsets.only(
+                              //               left: 10, right: 10),
+                              //           child: Row(
+                              //             mainAxisAlignment:
+                              //                 MainAxisAlignment.spaceBetween,
+                              //             children: [
+                              //               Text(
+                              //                 productData.name,
+                              //                 overflow: TextOverflow.ellipsis,
+                              //                 maxLines: 2,
+                              //                 style: const TextStyle(
+                              //                     fontWeight: FontWeight.bold,
+                              //                     fontSize: 16),
+                              //               ),
+                              //               Text(
+                              //                 "\$${productData.price}",
+                              //                 overflow: TextOverflow.ellipsis,
+                              //                 maxLines: 2,
+                              //                 style: const TextStyle(
+                              //                     fontSize: 16,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     fontFamily: "Niradei"),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       Row(
+                              //         children: [
+                              //           IconButton(
+                              //             onPressed: () {
+                              //               deleteProduct(productData, index);
+                              //             },
+                              //             icon: const Icon(
+                              //               Icons.edit,
+                              //             ),
+                              //           ),
+                              //           IconButton(
+                              //             onPressed: () {
+                              //               deleteProduct(productData, index);
+                              //             },
+                              //             icon: const Icon(
+                              //               Icons.delete_outline,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+
+                              Expanded(
+                                child: SizedBox(
+                                  height: 132 / 1.5,
+                                  child: Image.network(
+                                    productData.image,
+                                    fit: BoxFit.fitHeight,
+                                    width: 180,
+                                  ),
                                 ),
                               ),
                               Container(
-                                width: 180,
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                padding:
+                                    const EdgeInsets.only(left: 12, right: 12),
+                                child: Column(
                                   children: [
-                                    Expanded(
-                                      child: Text(
-                                        productData.name,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        deleteProduct(productData, index);
-                                      },
-                                      icon: const Icon(
-                                        Icons.delete_outline,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            productData.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                color: AppColor.secondary,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Niradei",
+                                                fontSize: ResponsiveWidget
+                                                        .isSmallScreen(context)
+                                                    ? 14
+                                                    : 16),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            deleteProduct(productData, index);
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete_outline,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  productData.description,
+                                  style: TextStyle(
+                                      color: AppColor.disable,
+                                      fontSize: ResponsiveWidget.isSmallScreen(
+                                              context)
+                                          ? 12
+                                          : 14),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  deleteProduct(productData, index);
+                                },
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                ),
+                              ),
                             ],
-                          );
-                        }),
+                          ),
+                        );
+                      }),
               ],
             ),
           ),

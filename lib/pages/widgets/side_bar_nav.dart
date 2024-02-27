@@ -1,6 +1,7 @@
+import 'package:admin_panel/pages/dashboard/dashboard.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
-import 'package:admin_panel/pages/orders/current_order_screen.dart';
+import 'package:admin_panel/pages/orders/order.dart';
 import 'package:admin_panel/pages/widgets/top_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,9 +38,7 @@ class _SideBarState extends State<SideBar> {
   int selectedIndex = 0;
 
   List<Widget> pages = [
-    const Center(
-      child: Text('Home'),
-    ),
+    const AdminDashboard(),
     const ManageDrink(),
     const CurrentOrderScreen(),
     const Center(
@@ -109,99 +108,97 @@ class _SideBarState extends State<SideBar> {
           ),
           body: Consumer<DrawerState>(builder: (context, drawerState, _) {
             return ResponsiveWidget(
-                largeScreen: Row(
-                  children: [
-                    Expanded(
-                      child: Scaffold(
-                        body: Row(
-                          children: [
-                            SideNavigationBar(
-                              selectedIndex: drawerState._selectedIndex,
-                              items: const [
-                                SideNavigationBarItem(
-                                  icon: Icons.home,
-                                  label: 'Home',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.free_breakfast,
-                                  label: 'Drinks',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.shopping_cart,
-                                  label: 'Current Orders',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.settings,
-                                  label: 'Setting',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.logout,
-                                  label: 'Logout',
-                                ),
-                              ],
-                              onTap: (index) {
-                                setState(() {
-                                  drawerState._selectedIndex = index;
-                                });
-                              },
-                            ),
-                            Expanded(
-                              child:
-                                  pages.elementAt(drawerState._selectedIndex),
-                            )
-                          ],
-                        ),
+              largeScreen: Row(
+                children: [
+                  Expanded(
+                    child: Scaffold(
+                      body: Row(
+                        children: [
+                          SideNavigationBar(
+                            selectedIndex: drawerState._selectedIndex,
+                            items: const [
+                              SideNavigationBarItem(
+                                icon: Icons.home,
+                                label: 'Home',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.free_breakfast,
+                                label: 'Drinks',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.shopping_cart,
+                                label: 'Current Orders',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.settings,
+                                label: 'Setting',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.logout,
+                                label: 'Logout',
+                              ),
+                            ],
+                            onTap: (index) {
+                              setState(() {
+                                drawerState._selectedIndex = index;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: pages.elementAt(drawerState._selectedIndex),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                mediumScreen: Row(
-                  children: [
-                    Expanded(
-                      child: Scaffold(
-                        body: Row(
-                          children: [
-                            SideNavigationBar(
-                              selectedIndex: drawerState._selectedIndex,
-                              items: const [
-                                SideNavigationBarItem(
-                                  icon: Icons.home,
-                                  label: 'Home',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.free_breakfast,
-                                  label: 'Drinks',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.shopping_cart,
-                                  label: 'Current Orders',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.settings,
-                                  label: 'Setting',
-                                ),
-                                SideNavigationBarItem(
-                                  icon: Icons.logout,
-                                  label: 'Logout',
-                                ),
-                              ],
-                              onTap: (index) {
-                                setState(() {
-                                  drawerState._selectedIndex = index;
-                                });
-                              },
-                            ),
-                            Expanded(
-                              child:
-                                  pages.elementAt(drawerState._selectedIndex),
-                            )
-                          ],
-                        ),
+                  ),
+                ],
+              ),
+              mediumScreen: Row(
+                children: [
+                  Expanded(
+                    child: Scaffold(
+                      body: Row(
+                        children: [
+                          SideNavigationBar(
+                            selectedIndex: drawerState._selectedIndex,
+                            items: const [
+                              SideNavigationBarItem(
+                                icon: Icons.home,
+                                label: 'Home',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.free_breakfast,
+                                label: 'Drinks',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.shopping_cart,
+                                label: 'Current Orders',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.settings,
+                                label: 'Setting',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.logout,
+                                label: 'Logout',
+                              ),
+                            ],
+                            onTap: (index) {
+                              setState(() {
+                                drawerState._selectedIndex = index;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: pages.elementAt(drawerState._selectedIndex),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                smallScreen: pages[drawerState._selectedIndex],
+                  ),
+                ],
+              ),
+              smallScreen: pages[drawerState._selectedIndex],
             );
           }),
         );
