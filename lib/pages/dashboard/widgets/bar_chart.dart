@@ -3,22 +3,22 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class BarChart extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  BarChart({Key? key}) : super(key: key);
+  BarChart({super.key});
   @override
   BarChartState createState() => BarChartState();
 }
 
 class BarChartState extends State<BarChart> {
-  late List<_ChartData> data;
+  late List<ChartData> data;
   late TooltipBehavior _tooltip;
   @override
   void initState() {
     data = [
-      _ChartData('Today', 12),
-      _ChartData('20 Feb', 15),
-      _ChartData('19 Feb', 30),
-      _ChartData('18 Feb', 6.4),
-      _ChartData('17 Feb', 14)
+      ChartData('Today', 12),
+      ChartData('20 Feb', 15),
+      ChartData('19 Feb', 30),
+      ChartData('18 Feb', 6.4),
+      ChartData('17 Feb', 14)
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
@@ -39,11 +39,11 @@ class BarChartState extends State<BarChart> {
         interval: 10,
       ),
       tooltipBehavior: _tooltip,
-      series: <CartesianSeries<_ChartData, String>>[
-        ColumnSeries<_ChartData, String>(
+      series: <CartesianSeries<ChartData, String>>[
+        ColumnSeries<ChartData, String>(
             dataSource: data,
-            xValueMapper: (_ChartData data, _) => data.x,
-            yValueMapper: (_ChartData data, _) => data.y,
+            xValueMapper: (ChartData data, _) => data.x,
+            yValueMapper: (ChartData data, _) => data.y,
             name: 'Amount',
             color: Color.fromRGBO(8, 142, 255, 1))
       ],
@@ -51,8 +51,8 @@ class BarChartState extends State<BarChart> {
   }
 }
 
-class _ChartData {
-  _ChartData(this.x, this.y);
+class ChartData {
+  ChartData(this.x, this.y);
   final String x;
   final double y;
 }
