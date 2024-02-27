@@ -20,7 +20,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
   final TextEditingController textController = TextEditingController();
 
   List<Order>? orders;
-  List<Product>? products;
+  List<Product>? productList;
   final AdminServices adminServices = AdminServices();
 
   @override
@@ -31,7 +31,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
   }
 
   fetchAllProducts() async {
-    products = await adminServices.fetchAllProducts(context);
+    productList = await adminServices.fetchAllProducts(context);
     setState(() {});
   }
 
@@ -80,16 +80,38 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              orders == null || products == null
+              orders == null || productList == null
                   ? const Loader()
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: orders!.length,
                       itemBuilder: (context, index) {
-                        final orderData = orders![index];
-                        final matchingProduct = products!.firstWhere(
-                          (product) => product.id == orderData.productID,
-                        );
+                        bool found = false;
+                          final orderData = orders![index];
+                          // final matchingProduct = products!.firstWhere(
+                          //   (product) => product.id == orderData.productID,
+                          // );
+                          late Product productFound;
+                          for (int i = 0; i < productList!.length; i++) {
+                            final products = productList![i];
+                            if (products.id == orderData.productID) {
+                              productFound = products;
+                              found = true;
+                              break;
+                            }
+                            found = false;
+                          }
+
+                          if (!found) {
+                            productFound = Product(
+                              id: orderData.productID,
+                              name: 'Deleted Product',
+                              price: 0,
+                              description: 'Deleted Product',
+                              image:
+                                  'https://res.cloudinary.com/dsx7eoho1/image/upload/v1708670880/Product/e4nbm5zqfq8cbkkvnat2.png',
+                            );
+                          }
                         return InkWell(
                           onTap: () {},
                           child: Column(
@@ -104,7 +126,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
                                     Row(
                                       children: [
                                         Image.network(
-                                          matchingProduct.image,
+                                          productFound.image,
                                           width: 50,
                                           height: 50,
                                           fit: BoxFit.cover,
@@ -124,7 +146,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
                                               ),
                                             ),
                                             Text(
-                                              matchingProduct.name,
+                                              productFound.name,
                                               style: const TextStyle(
                                                   fontFamily: "Niradei",
                                                   fontSize: 11),
