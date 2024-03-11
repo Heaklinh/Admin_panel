@@ -1,15 +1,110 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/models/order.dart';
+import 'package:admin_panel/models/product.dart';
+import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
 class OrderHistory extends StatelessWidget {
-  OrderHistory({super.key});
-  final TextEditingController textController = TextEditingController();
+  final List<Order>? orderHistoryList;
+  final List<Product>? productList;
+  final List<User>? userList;
+  const OrderHistory({super.key, required this.orderHistoryList, required this.productList, required this.userList});
 
   @override
   Widget build(BuildContext context) {
+
+    CustomText customText(String text) {
+      return CustomText(
+        text: text,
+        size: 12,
+        color: AppColor.disable,
+        weight: FontWeight.normal,
+      );
+    }
+
+    DataRow buildDataRow(Order order) {
+
+      bool pFound = false;
+      late Product productFound;
+      for (int i = 0; i < productList!.length; i++) {
+        final products = productList![i];
+        if (products.id == order.productID) {
+          productFound = products;
+          pFound = true;
+          break;
+        }
+        pFound = false;
+      }
+
+      if (!pFound) {
+        productFound = Product(
+          id: order.productID,
+          name: 'Deleted Product',
+          price: 0,
+          description: 'Deleted Product',
+          image:
+              'https://res.cloudinary.com/dsx7eoho1/image/upload/v1708670880/Product/e4nbm5zqfq8cbkkvnat2.png',
+        );
+      }
+      
+      bool uFound = false;
+      late User userFound;
+      for (int i = 0; i < userList!.length; i++) {
+        final users = userList![i];
+        if (users.id == order.userID) {
+          userFound = users;
+          uFound = true;
+          break;
+        }
+        uFound = false;
+      }
+
+      if(!uFound){
+        userFound = User(
+          id: order.userID,
+          name: 'Deleted User',
+          email: 'Deleted User',
+          password: 'Deleted User',
+          confirmPassword: 'Deleted User',
+          type: 'user',
+          loginToken: 'Deleted User',
+          verified: null,
+          createdAt: null,
+          lastRequestedOTP: null,
+          requestedOTPCount: 0
+        );
+      }
+
+      return DataRow(
+        cells: [
+          DataCell(customText(userFound.name)),
+          DataCell(customText(productFound.name)),
+          DataCell(customText(order.orderNumber.toString())),
+          DataCell(customText("\$${order.totalPrice}")),
+          DataCell(
+            Container(
+              decoration: BoxDecoration(
+                color: AppColor.primary,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 2,
+              ),
+              child: const CustomText(
+                text: "Done",
+                size: 12,
+                color: AppColor.white,
+                weight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 30),
@@ -18,9 +113,10 @@ class OrderHistory extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-              offset: const Offset(0, 6),
-              color: AppColor.disable.withOpacity(.1),
-              blurRadius: 12)
+            offset: const Offset(0, 6),
+            color: AppColor.disable.withOpacity(.1),
+            blurRadius: 12,
+          )
         ],
         border: Border.all(
           color: AppColor.disable,
@@ -33,7 +129,7 @@ class OrderHistory extends StatelessWidget {
           const Row(
             children: [
               CustomText(
-                text: "Order Hisotry",
+                text: "Order History",
                 size: 20,
                 color: AppColor.secondary,
                 weight: FontWeight.bold,
@@ -56,7 +152,7 @@ class OrderHistory extends StatelessWidget {
                 ),
                 const DataColumn(
                   label: Text(
-                    'Order',
+                    'Product',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -83,47 +179,8 @@ class OrderHistory extends StatelessWidget {
                 ),
               ],
               rows: List<DataRow>.generate(
-                100,
-                (index) => DataRow(
-                  cells: [
-                    const DataCell(CustomText(
-                        text: "Eric",
-                        size: 12,
-                        color: AppColor.disable,
-                        weight: FontWeight.normal)),
-                    const DataCell(CustomText(
-                        text: "Eric",
-                        size: 12,
-                        color: AppColor.disable,
-                        weight: FontWeight.normal)),
-                    const DataCell(CustomText(
-                        text: "Eric",
-                        size: 12,
-                        color: AppColor.disable,
-                        weight: FontWeight.normal)),
-                    const DataCell(CustomText(
-                        text: "Eric",
-                        size: 12,
-                        color: AppColor.disable,
-                        weight: FontWeight.normal)),
-                    DataCell(
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColor.primary,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                        ),
-                        child: const CustomText(
-                            text: "Preparing",
-                            size: 12,
-                            color: AppColor.white,
-                            weight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
+                orderHistoryList!.length,
+                (index) => buildDataRow(orderHistoryList![index]),
               ),
             ),
           ),

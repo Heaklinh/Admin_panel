@@ -1,19 +1,24 @@
+import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/pages/dashboard/widgets/info_cart_small.dart';
 import 'package:flutter/material.dart';
 
 class OverviewCardSmallScreen extends StatelessWidget {
-  const OverviewCardSmallScreen({super.key});
+  final List<Order>? orderHistoryList;
+  final List<Order>? inStorage;
+  final List<Order>? orderQueueList;
+  final List<Order>? orderList;
+  const OverviewCardSmallScreen({super.key, required this.orderHistoryList, required this.inStorage, required this.orderQueueList, required this.orderList});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       height: 400,
       child: Column(
         children: [
           InfoCardSmall(
             title: "In Queue",
-            value: "7",
+            value: orderQueueList!.length.toString(),
             onTap: () {},
             isActive: true,
           ),
@@ -22,7 +27,7 @@ class OverviewCardSmallScreen extends StatelessWidget {
           ),
           InfoCardSmall(
             title: "In Storage",
-            value: "7",
+            value: inStorage!.length.toString(),
             onTap: () {},
           ),
           SizedBox(
@@ -30,7 +35,7 @@ class OverviewCardSmallScreen extends StatelessWidget {
           ),
           InfoCardSmall(
             title: "Completed",
-            value: "7",
+            value: orderHistoryList!.length.toString(),
             onTap: () {},
           ),
           SizedBox(
@@ -38,7 +43,7 @@ class OverviewCardSmallScreen extends StatelessWidget {
           ),
           InfoCardSmall(
             title: "Total Order",
-            value: "7",
+            value: orderList!.length.toString(),
             onTap: () {},
           ),
         ],

@@ -28,7 +28,7 @@ class RevenueSectionSmall extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 260,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

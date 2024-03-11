@@ -14,7 +14,7 @@ class BarChartState extends State<BarChart> {
   @override
   void initState() {
     data = [
-      ChartData('Today', 12),
+      ChartData('Today', 100),
       ChartData('20 Feb', 15),
       ChartData('19 Feb', 30),
       ChartData('18 Feb', 6.4),
@@ -35,7 +35,7 @@ class BarChartState extends State<BarChart> {
         majorGridLines:
             MajorGridLines(width: 0), // Remove horizontal grid lines
         minimum: 0,
-        maximum: 40,
+        maximum: 100,
         interval: 10,
       ),
       tooltipBehavior: _tooltip,
@@ -45,7 +45,7 @@ class BarChartState extends State<BarChart> {
             xValueMapper: (ChartData data, _) => data.x,
             yValueMapper: (ChartData data, _) => data.y,
             name: 'Amount',
-            color: Color.fromRGBO(8, 142, 255, 1))
+            color:const Color.fromRGBO(8, 142, 255, 1))
       ],
     );
   }

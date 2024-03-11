@@ -2,10 +2,7 @@ import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
-import 'package:admin_panel/pages/helpers/responsiveness.dart';
-import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
 class CurrentOrderScreen extends StatefulWidget {

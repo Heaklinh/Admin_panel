@@ -1,6 +1,5 @@
 
 import 'package:admin_panel/pages/drink/manage_drink.dart';
-import 'package:admin_panel/pages/drink/widgets/card_large_screen.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:flutter/material.dart';
 

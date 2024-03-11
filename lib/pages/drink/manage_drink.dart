@@ -2,7 +2,6 @@ import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/pages/drink/add_product_page.dart';
-import 'package:admin_panel/pages/drink/widgets/single_product.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
@@ -108,7 +107,7 @@ class _ManageDrinkState extends State<ManageDrink> {
                                   });
                             },
                             child: Container(
-                              margin: EdgeInsets.all(16),
+                              margin: const EdgeInsets.all(16),
                               height: 200,
                               decoration: const ShapeDecoration(
                                 color: AppColor.primary,
