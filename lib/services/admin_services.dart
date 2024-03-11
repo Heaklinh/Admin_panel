@@ -6,6 +6,7 @@ import 'package:admin_panel/constants/global_variables.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
+import 'package:admin_panel/models/user.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -135,5 +136,33 @@ class AdminServices {
       showSnackBar(context, e.toString());
     }
     return orderList;
+  }
+
+  Future<List<User>> fetchAllUsers(BuildContext context) async {
+    List<User> userList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-users'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (!context.mounted) return userList;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              userList.add(
+                User.fromJson(
+                  jsonEncode(jsonDecode(res.body)[i]),
+                ),
+              );
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return userList;
   }
 }

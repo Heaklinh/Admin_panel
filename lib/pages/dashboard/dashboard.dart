@@ -1,4 +1,6 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/models/order.dart';
+import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/pages/dashboard/widgets/order_history.dart';
 import 'package:admin_panel/pages/dashboard/widgets/overview_cards_large.dart';
 import 'package:admin_panel/pages/dashboard/widgets/overview_cards_medium.dart';
@@ -7,6 +9,7 @@ import 'package:admin_panel/pages/dashboard/widgets/revenue_info_section_large.d
 import 'package:admin_panel/pages/dashboard/widgets/revenue_info_section_small.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
+import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboard extends StatefulWidget {
@@ -18,6 +21,10 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
+  List<Order>? orders;
+  List<Product>? productList;
+  final AdminServices adminServices = AdminServices();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +60,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   const RevenueSectionSmall()
                 else
                   const RevenueSectionLarge(),
-                OrderHistory()
+                const OrderHistory()
               ],
             ),
           ),

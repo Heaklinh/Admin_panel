@@ -15,6 +15,7 @@ class UserProvider extends ChangeNotifier {
     createdAt: null, 
     requestedOTPCount: 0,
     lastRequestedOTP: null, 
+    feedback: ''
   );
 
   User get user => _user;

@@ -2,7 +2,6 @@ import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/pages/drink/add_product_page.dart';
-import 'package:admin_panel/pages/drink/widgets/single_product.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
@@ -37,12 +36,13 @@ class _ManageDrinkState extends State<ManageDrink> {
 
   void deleteProduct(Product product, int index) {
     adminServices.deleteProduct(
-        context: context,
-        product: product,
-        onSuccess: () {
-          products!.removeAt(index);
-          setState(() {});
-        });
+      context: context,
+      product: product,
+      onSuccess: () {
+        products!.removeAt(index);
+        setState(() {});
+      },
+    );
   }
 
   int calculateCrossAxisCount(BuildContext context) {
@@ -265,12 +265,12 @@ class _ManageDrinkState extends State<ManageDrink> {
                                                     : 16),
                                           ),
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            deleteProduct(productData, index);
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete_outline,
+                                        Text(
+                                          '\$${productData.price}',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColor.primary,
                                           ),
                                         ),
                                       ],
@@ -279,7 +279,7 @@ class _ManageDrinkState extends State<ManageDrink> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(12),
                                 child: Text(
                                   productData.description,
                                   style: TextStyle(
@@ -290,14 +290,30 @@ class _ManageDrinkState extends State<ManageDrink> {
                                           : 14),
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  deleteProduct(productData, index);
-                                },
-                                icon: const Icon(
-                                  Icons.delete_outline,
+                              Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        //editProduct(productData, index);
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        deleteProduct(productData, index);
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete_outline,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         );

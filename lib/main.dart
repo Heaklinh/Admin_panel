@@ -1,4 +1,6 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/pages/auth/authenthication.dart';
+import 'package:admin_panel/pages/home_page.dart';
 import 'package:admin_panel/pages/routing/routes.dart';
 import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: "Niradei",
-        scaffoldBackgroundColor: Color(0xFFF2F3F7),
+        scaffoldBackgroundColor: const Color(0xFFF2F3F7),
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primary)
             .copyWith(secondary: AppColor.secondary),

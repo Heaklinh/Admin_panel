@@ -12,8 +12,9 @@ class User {
   final DateTime? createdAt;
   final int requestedOTPCount;
   final DateTime? lastRequestedOTP;
+  final String feedback;
 
-  User( 
+  User(
       {required this.id,
       required this.name,
       required this.email,
@@ -25,7 +26,7 @@ class User {
       required this.createdAt,
       required this.lastRequestedOTP,
       required this.requestedOTPCount,
-      });
+      required this.feedback});
 
   Map<String, dynamic> toMap() {
     return {
@@ -40,23 +41,24 @@ class User {
       'createdAt': createdAt,
       'requestedOTPCount': requestedOTPCount,
       'lastRequestedOTP': lastRequestedOTP,
+      'feedback': feedback
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['_id'] ?? '',
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      password: map['password'] ?? '',
-      confirmPassword: map['confirmPassword'] ?? '',
-      type: map['type'] ?? '',
-      loginToken: map['loginToken'] ?? '',
-      verified: map['verified'],
-      createdAt: null,
-      requestedOTPCount: map['requestedOTPCount'] ?? 0,
-      lastRequestedOTP: null,
-    );
+        id: map['_id'] ?? '',
+        name: map['name'] ?? '',
+        email: map['email'] ?? '',
+        password: map['password'] ?? '',
+        confirmPassword: map['confirmPassword'] ?? '',
+        type: map['type'] ?? '',
+        loginToken: map['loginToken'] ?? '',
+        verified: map['verified'],
+        createdAt: null,
+        requestedOTPCount: map['requestedOTPCount'] ?? 0,
+        lastRequestedOTP: null,
+        feedback: map['feedback'] ?? '');
   }
 
   String toJson() => json.encode(toMap());

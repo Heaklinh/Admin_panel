@@ -41,6 +41,9 @@ dependencies:
   provider: ^6.1.1
   side_navigation: ^1.0.4
   syncfusion_flutter_charts: ^24.2.6
+  shared_preferences: ^2.2.2
+  dropdown_button2: ^2.3.9
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_lints: ^3.0.1
@@ -80,6 +83,16 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  fonts:
+    - family: CADTMonoDisplay
+      fonts:
+        - asset: assets/fonts/CADTMonoDisplay-Regular.ttf
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
+    - family: Niradei
+      fonts:
+        - asset: assets/fonts/Niradei-Regular.ttf
+        - asset: assets/fonts/Niradei-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

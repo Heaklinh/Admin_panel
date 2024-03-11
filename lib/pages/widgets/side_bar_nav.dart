@@ -1,6 +1,9 @@
+import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/pages/dashboard/dashboard.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
+import 'package:admin_panel/pages/feedback/feedback.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/orders/current_order_screen.dart';
 import 'package:admin_panel/pages/orders/order.dart';
 import 'package:admin_panel/pages/widgets/top_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +12,18 @@ import 'package:side_navigation/side_navigation.dart';
 
 class DrawerState extends ChangeNotifier {
   int _selectedIndex = 0;
+  bool _isSidebarOpen = false; // Track if sidebar is open
 
   int get selectedIndex => _selectedIndex;
+  bool get isToggle => _isSidebarOpen;
 
   set selectedIndex(int index) {
     _selectedIndex = index;
+    notifyListeners();
+  }
+
+  set isSideBarOpen(bool isToggle) {
+    _isSidebarOpen = isToggle;
     notifyListeners();
   }
 }
@@ -26,7 +36,7 @@ class DrawerItem {
 }
 
 class SideBar extends StatefulWidget {
-  static const String routeName = '/actual-action';
+  static const String routeName = '/side_bar_nav';
 
   const SideBar({super.key});
   @override
@@ -40,7 +50,8 @@ class _SideBarState extends State<SideBar> {
   List<Widget> pages = [
     const AdminDashboard(),
     const ManageDrink(),
-    const CurrentOrderScreen(),
+    const CurrentOrderPage(),
+    const FeedbackPage(),
     const Center(
       child: Text('Setting'),
     ),
@@ -63,13 +74,14 @@ class _SideBarState extends State<SideBar> {
       icon: const Icon(Icons.shopping_cart),
     ),
     DrawerItem(
-      text: 'Setting',
-      icon: const Icon(Icons.settings),
+      text: 'Feeback',
+      icon: const Icon(Icons.feedback),
     ),
     DrawerItem(
-      text: 'Logout',
-      icon: const Icon(Icons.logout),
+      text: 'Settings',
+      icon: const Icon(Icons.settings),
     ),
+    DrawerItem(text: 'Logout', icon: const Icon(Icons.logout))
   ];
 
   void updatePage(int page) {
@@ -87,22 +99,55 @@ class _SideBarState extends State<SideBar> {
         return Scaffold(
           key: scaffoldKey,
           extendBodyBehindAppBar: true,
-          appBar: topNavigationBar(context, scaffoldKey),
-          drawer: Drawer(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: drawerItems.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: drawerItems[index].icon,
-                  title: Text(drawerItems[index].text),
-                  onTap: () {
-                    // Update the state of the app
-                    drawerState.selectedIndex = index;
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                );
+          appBar: topNavigationBar(context, scaffoldKey, drawerState),
+          drawer: Container(
+            color: AppColor.white,
+            child: SideNavigationBar(
+              expandable: false,
+              header: const SideNavigationBarHeader(
+                  image: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                  title: Text('Admin'),
+                  subtitle: Text('email@gmail.com')),
+              selectedIndex: drawerState._selectedIndex,
+              items: const [
+                SideNavigationBarItem(
+                  icon: Icons.home,
+                  label: 'Home',
+                ),
+                SideNavigationBarItem(
+                  icon: Icons.free_breakfast,
+                  label: 'Drinks',
+                ),
+                SideNavigationBarItem(
+                  icon: Icons.shopping_cart,
+                  label: 'Incoming Orders',
+                ),
+                SideNavigationBarItem(
+                  icon: Icons.feedback,
+                  label: 'Feedback',
+                ),
+                SideNavigationBarItem(
+                  icon: Icons.settings,
+                  label: 'Setting',
+                ),
+                SideNavigationBarItem(
+                  icon: Icons.logout,
+                  label: 'Logout',
+                ),
+              ],
+              theme: SideNavigationBarTheme(
+                togglerTheme: SideNavigationBarTogglerTheme.standard(),
+                itemTheme: SideNavigationBarItemTheme(
+                    selectedItemColor: AppColor.primary),
+                dividerTheme: SideNavigationBarDividerTheme.standard(),
+              ),
+              onTap: (index) {
+                setState(() {
+                  drawerState._selectedIndex = index;
+                  Navigator.pop(context);
+                });
               },
             ),
           ),
@@ -127,7 +172,11 @@ class _SideBarState extends State<SideBar> {
                               ),
                               SideNavigationBarItem(
                                 icon: Icons.shopping_cart,
-                                label: 'Current Orders',
+                                label: 'Incoming Orders',
+                              ),
+                              SideNavigationBarItem(
+                                icon: Icons.feedback,
+                                label: 'Feedback',
                               ),
                               SideNavigationBarItem(
                                 icon: Icons.settings,
@@ -138,11 +187,23 @@ class _SideBarState extends State<SideBar> {
                                 label: 'Logout',
                               ),
                             ],
+                            theme: SideNavigationBarTheme(
+                              togglerTheme:
+                                  SideNavigationBarTogglerTheme.standard(),
+                              itemTheme: SideNavigationBarItemTheme(
+                                  selectedItemColor: AppColor.primary),
+                              dividerTheme:
+                                  SideNavigationBarDividerTheme.standard(),
+                            ),
                             onTap: (index) {
                               setState(() {
                                 drawerState._selectedIndex = index;
                               });
                             },
+                            toggler: SideBarToggler(
+                              expandIcon: Icons.keyboard_arrow_left,
+                              shrinkIcon: Icons.keyboard_arrow_right,
+                            ),
                           ),
                           Expanded(
                             child: pages.elementAt(drawerState._selectedIndex),
@@ -175,6 +236,10 @@ class _SideBarState extends State<SideBar> {
                                 label: 'Current Orders',
                               ),
                               SideNavigationBarItem(
+                                icon: Icons.feedback,
+                                label: 'Feedback',
+                              ),
+                              SideNavigationBarItem(
                                 icon: Icons.settings,
                                 label: 'Setting',
                               ),
@@ -183,11 +248,29 @@ class _SideBarState extends State<SideBar> {
                                 label: 'Logout',
                               ),
                             ],
+                            theme: SideNavigationBarTheme(
+                              togglerTheme:
+                                  SideNavigationBarTogglerTheme.standard(),
+                              itemTheme: SideNavigationBarItemTheme(
+                                  selectedItemColor: AppColor.white,
+                                  selectedBackgroundColor: AppColor.primary),
+                              dividerTheme:
+                                  SideNavigationBarDividerTheme.standard(),
+                            ),
                             onTap: (index) {
                               setState(() {
                                 drawerState._selectedIndex = index;
                               });
                             },
+                            toggler: SideBarToggler(
+                              expandIcon: Icons.arrow_forward_ios_rounded,
+                              shrinkIcon: Icons.arrow_back_ios_rounded,
+                              onToggle: () {
+                               
+                                drawerState._isSidebarOpen =
+                                    !drawerState._isSidebarOpen;
+                              },
+                            ),
                           ),
                           Expanded(
                             child: pages.elementAt(drawerState._selectedIndex),

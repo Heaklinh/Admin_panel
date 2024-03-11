@@ -17,11 +17,12 @@ class CustomText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Text(
-        text, 
+        text,
         style: TextStyle(
-          color: color, 
-          fontSize: size, 
+          color: color,
+          fontSize: size,
           fontWeight: weight,
+          fontFamily: "Niradei",
         ),
       ),
     );
