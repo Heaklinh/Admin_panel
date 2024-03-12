@@ -70,7 +70,7 @@ class UserReviewCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
-            lessStyle: TextStyle(
+            lessStyle: const TextStyle(
               color: AppColor.secondary,
               fontWeight: FontWeight.bold,
               fontSize: 14,
