@@ -12,7 +12,7 @@ class User {
   final DateTime? createdAt;
   final int requestedOTPCount;
   final DateTime? lastRequestedOTP;
-  final String feedback;
+  
 
   User(
       {required this.id,
@@ -26,7 +26,7 @@ class User {
       required this.createdAt,
       required this.lastRequestedOTP,
       required this.requestedOTPCount,
-      required this.feedback});
+      });
 
   Map<String, dynamic> toMap() {
     return {
@@ -41,7 +41,7 @@ class User {
       'createdAt': createdAt,
       'requestedOTPCount': requestedOTPCount,
       'lastRequestedOTP': lastRequestedOTP,
-      'feedback': feedback
+     
     };
   }
 
@@ -58,7 +58,7 @@ class User {
         createdAt: null,
         requestedOTPCount: map['requestedOTPCount'] ?? 0,
         lastRequestedOTP: null,
-        feedback: map['feedback'] ?? '');
+       );
   }
 
   String toJson() => json.encode(toMap());

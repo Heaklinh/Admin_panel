@@ -1,5 +1,6 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/user.dart';
@@ -22,7 +23,8 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   final TextEditingController textController = TextEditingController();
 
-  List<User>? users;
+
+  List<UserFeedback>? feedback;
   final AdminServices adminServices = AdminServices();
 
   final List<String> sortItems = [
@@ -30,9 +32,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
     'Descending',
   ];
 
-  String? selectedValue;
-  bool isOrderDescending = false;
-  bool isUsernameDescending = false;
 
   @override
   void initState() {
@@ -41,7 +40,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   fetchAllUsers() async {
-    users = await adminServices.fetchAllUsers(context);
+    feedback = await adminServices.fetchAllFeedback(context);
     setState(() {});
   }
 

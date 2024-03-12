@@ -295,7 +295,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                   createdAt: null,
                                   lastRequestedOTP: null,
                                   requestedOTPCount: 0,
-                                  feedback: '');
+                                  );
                             }
 
                             if (!found) {

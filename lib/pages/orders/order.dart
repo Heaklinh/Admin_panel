@@ -222,7 +222,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
                           createdAt: null,
                           lastRequestedOTP: null,
                           requestedOTPCount: 0,
-                          feedback: ''
+                          
                         );
                       }
                 

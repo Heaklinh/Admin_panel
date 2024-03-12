@@ -1,4 +1,3 @@
-
 import 'package:admin_panel/models/user.dart';
 import 'package:flutter/material.dart';
 
@@ -8,14 +7,13 @@ class UserProvider extends ChangeNotifier {
     name: '',
     email: '',
     password: '',
-    confirmPassword: '', 
+    confirmPassword: '',
     loginToken: '',
     type: '',
     verified: null,
-    createdAt: null, 
+    createdAt: null,
     requestedOTPCount: 0,
-    lastRequestedOTP: null, 
-    feedback: ''
+    lastRequestedOTP: null,
   );
 
   User get user => _user;
