@@ -13,13 +13,20 @@ class UserProvider extends ChangeNotifier {
     verified: null,
     createdAt: null,
     requestedOTPCount: 0,
-    lastRequestedOTP: null,
+    lastRequestedOTP: null, 
+    profile: '',
+    devices: null,
   );
 
   User get user => _user;
 
   void setUser(String user) {
     _user = User.fromJson(user);
+    notifyListeners();
+  }
+
+  void setUserFromModel(User user) {
+    _user = user;
     notifyListeners();
   }
 }

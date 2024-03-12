@@ -108,7 +108,7 @@ class _ManageDrinkState extends State<ManageDrink> {
                                   });
                             },
                             child: Container(
-                              margin: EdgeInsets.all(16),
+                              margin: const EdgeInsets.all(16),
                               height: 200,
                               decoration: const ShapeDecoration(
                                 color: AppColor.primary,

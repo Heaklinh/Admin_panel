@@ -1,8 +1,13 @@
+import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/pages/dashboard/widgets/info_cart.dart';
 import 'package:flutter/material.dart';
 
 class OverviewCardLargeScreen extends StatelessWidget {
-  const OverviewCardLargeScreen({super.key});
+  final List<Order>? orderHistoryList;
+  final List<Order>? inStorage;
+  final List<Order>? orderQueueList;
+  final List<Order>? orderList;
+  const OverviewCardLargeScreen({super.key, required this.orderHistoryList,required this.inStorage, required this.orderQueueList, required this.orderList});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,7 @@ class OverviewCardLargeScreen extends StatelessWidget {
       children: [
         InfoCard(
           title: "In Queue",
-          value: "7",
+          value: orderQueueList!.length.toString(),
           topColor: Colors.orange,
           onTap: () {},
         ),
@@ -20,7 +25,7 @@ class OverviewCardLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "In Storage",
-          value: "7",
+          value: inStorage!.length.toString(),
           topColor: Colors.green,
           onTap: () {},
         ),
@@ -29,7 +34,7 @@ class OverviewCardLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Completed",
-          value: "7",
+          value: orderHistoryList!.length.toString(),
           topColor: Colors.yellow,
           onTap: () {},
         ),
@@ -38,7 +43,7 @@ class OverviewCardLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Total Order",
-          value: "7",
+          value: orderList!.length.toString(),
           topColor: Colors.blue,
           onTap: () {},
         ),
