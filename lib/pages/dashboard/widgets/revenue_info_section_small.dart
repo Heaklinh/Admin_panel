@@ -42,7 +42,7 @@ class RevenueSectionSmall extends StatelessWidget {
                 SizedBox(
                   width: 600,
                   height: 200,
-                  child: BarChart(),
+                  child: BarChart(orderList: [], type: "day",),
                 )
               ],
             ),

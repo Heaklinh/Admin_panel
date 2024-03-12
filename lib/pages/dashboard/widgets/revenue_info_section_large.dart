@@ -3,21 +3,25 @@ import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/pages/dashboard/widgets/bar_chart.dart';
 import 'package:admin_panel/pages/dashboard/widgets/revenue_info.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class RevenueSectionLarge extends StatelessWidget {
   final List<Order>? orderList;
-  const RevenueSectionLarge({super.key, required this.orderList});
+  RevenueSectionLarge({super.key, required this.orderList});
+  final CarouselController _carouselController = CarouselController();
   
   @override
   Widget build(BuildContext context) {
     double todayIncome = 0;
+    double thisMonthIncome= 0;
+    double thisYearIncome = 0;
     List<Order>? todayOrders = filterDate(
       year: DateTime.now().year,
       month: DateTime.now().month,
       day: DateTime.now().day
     );
-    List<Order>? last30Days = filterDate(
+    List<Order>? thisMonth = filterDate(
       month: DateTime.now().month,
     );
     List<Order>? last12Months = filterDate(
@@ -26,6 +30,18 @@ class RevenueSectionLarge extends StatelessWidget {
     for(int i = 0; i < todayOrders.length; i++){
       todayIncome+=todayOrders[i].totalPrice;
     }
+    for(int i = 0; i < thisMonth.length; i++){
+      thisMonthIncome+=thisMonth[i].totalPrice;
+    }
+    for(int i = 0; i < last12Months.length; i++){
+      thisYearIncome+=last12Months[i].totalPrice;
+    }
+
+    List<Widget> revenueCharts = [
+      BarChart(orderList: orderList, type: "day"),
+      BarChart(orderList: orderList, type: "month")
+    ];
+
     return Container(
       padding: const EdgeInsets.all(24),
       margin: const EdgeInsets.symmetric(vertical: 30),
@@ -58,8 +74,29 @@ class RevenueSectionLarge extends StatelessWidget {
                 SizedBox(
                   width: 600,
                   height: 300,
-                  child: BarChart(),
-                )
+                  child: CarouselSlider(
+                    items: revenueCharts,
+                    options:CarouselOptions(viewportFraction: 1, height: 300),
+                    carouselController: _carouselController,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_left),
+                      onPressed: () {
+                        _carouselController.previousPage();
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.arrow_right),
+                      onPressed: () {
+                        _carouselController.nextPage();
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -70,7 +107,7 @@ class RevenueSectionLarge extends StatelessWidget {
                 Row(
                   children: [
                     RevenueInfo(title: "Today", amount: "${todayOrders.length}"),
-                    RevenueInfo(title: "Today income", amount: "\$$todayIncome"),
+                    RevenueInfo(title: "Today Income", amount: "\$$todayIncome"),
                   ],
                 ),
                 const SizedBox(
@@ -78,8 +115,17 @@ class RevenueSectionLarge extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    RevenueInfo(title: "Last 30 Days", amount: "${last30Days.length}"),
-                    RevenueInfo(title: "Last 12 Months", amount: "${last12Months.length}"),
+                    RevenueInfo(title: "This Month", amount: "${thisMonth.length}"),
+                    RevenueInfo(title: "This Month Income", amount: "\$$thisMonthIncome"),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    RevenueInfo(title: "This Year", amount: "${last12Months.length}"),
+                    RevenueInfo(title: "This Year Income", amount: "\$$thisYearIncome"),
                   ],
                 ),
               ],
