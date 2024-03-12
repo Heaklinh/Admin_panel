@@ -114,7 +114,7 @@ class BarChartState extends State<BarChart> {
             xValueMapper: (ChartData data, _) => data.x,
             yValueMapper: (ChartData data, _) => data.y,
             name: 'Amount',
-            color:const Color.fromRGBO(8, 142, 255, 1))
+            color:  const Color.fromRGBO(8, 142, 255, 1))
       ],
     );
   }

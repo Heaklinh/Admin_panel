@@ -23,7 +23,6 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
-  
   List<Order>? orderList;
   List<Product>? productList;
   List<User>? userList;
