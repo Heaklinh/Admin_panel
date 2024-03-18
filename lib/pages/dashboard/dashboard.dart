@@ -15,7 +15,6 @@ import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboard extends StatefulWidget {
-  static const String routeName = '/dashboard';
   const AdminDashboard({super.key});
 
   @override
@@ -42,18 +41,24 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   fetchAllProducts() async {
     productList = await adminServices.fetchAllProducts(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   fetchAllUsers() async{
     userList = await adminServices.fetchAllUsers(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
   
   fetchAllOrders() async {
     orderList = await adminServices.fetchAllOrders(context);
     categorizeOrders(orderList); // Call getOrderStatus when fetching orders
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   // Function to categorize orders based on their status
@@ -126,7 +131,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     orderList: orderList
                   ),
                 if (ResponsiveWidget.isSmallScreen(context))
-                  const RevenueSectionSmall()
+                  RevenueSectionSmall(orderList: orderList)
                 else
                   RevenueSectionLarge(orderList: orderList),
                 OrderHistory(orderHistoryList: orderHistoryList, productList: productList, userList: userList)

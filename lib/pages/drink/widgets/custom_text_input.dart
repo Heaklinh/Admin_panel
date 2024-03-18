@@ -10,8 +10,6 @@ class CustomTextInput extends StatefulWidget {
   final bool isEdit;
   final String existingText;
   final String label;
-  late double width;
-
   CustomTextInput(
       {super.key,
       required this.controller,
@@ -22,7 +20,7 @@ class CustomTextInput extends StatefulWidget {
       this.isEdit = false,
       this.existingText = "",
       this.label = '',
-      this.width = 300});
+      });
 
   @override
   State<CustomTextInput> createState() => _CustomTextInputState();
@@ -53,8 +51,9 @@ class _CustomTextInputState extends State<CustomTextInput> {
 
   @override
   Widget build(BuildContext context) {
+    double width = 300;
     return SizedBox(
-      width: widget.width,
+      width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

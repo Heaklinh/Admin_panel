@@ -22,7 +22,7 @@ class NavListTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColor.primary,
           fontSize: 18,
         ),

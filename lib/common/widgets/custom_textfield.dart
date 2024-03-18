@@ -26,6 +26,12 @@ class CustomTextField extends StatelessWidget {
         if (val == null || val.isEmpty) {
           return 'Enter your $hintText';
         }
+        if (hintText == "Price") {
+          // Check if the value is a valid number
+          if (double.tryParse(val) == null) {
+            return 'Please input a number';
+          }
+        }
         return null;
       },
       maxLines: maxLines,

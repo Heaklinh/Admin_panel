@@ -51,11 +51,6 @@ class _ItemTileState extends State<ItemTile> {
         onHover: (value) {
           setState(() {
             isHovered = value;
-            if (value == true) {
-              print('hover');
-            } else {
-              print('not ');
-            }
           });
         },
         borderRadius: BorderRadius.circular(8),
