@@ -1,6 +1,6 @@
 import 'package:admin_panel/constants/color.dart';
-import 'package:admin_panel/pages/auth/widgets.dart/auth_service.dart';
 import 'package:admin_panel/pages/drink/widgets/custom_text_input.dart';
+import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   bool _isSubmitted = false;
-  final AuthService authService = AuthService();
+  final AdminServices authService = AdminServices();
 
   @override
   void dispose() {
