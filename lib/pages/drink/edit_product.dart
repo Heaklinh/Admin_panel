@@ -4,22 +4,23 @@ import 'package:admin_panel/common/widgets/custom_textfield.dart';
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
+import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddProductPage extends StatefulWidget {
-
-  final VoidCallback onProductAdded;
-  const AddProductPage({super.key, required this.onProductAdded});
+class EditProductPage extends StatefulWidget {
+  final Product productData;
+  final VoidCallback onProductUpdated;
+  const EditProductPage({super.key, required this.onProductUpdated, required this.productData});
 
   @override
-  State<AddProductPage> createState() => _AddProductPageState();
+  State<EditProductPage> createState() => _EditProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _EditProductPageState extends State<EditProductPage> {
   AdminServices adminServices = AdminServices();
 
   final TextEditingController productNameController = TextEditingController();
@@ -29,9 +30,8 @@ class _AddProductPageState extends State<AddProductPage> {
 
   File? pickedImage;
   Uint8List webImage = Uint8List(8);
-  bool selectedImage = true;
 
-  void addProduct() {
+  void editProduct() {
     const Duration timeoutDuration =
         Duration(seconds: 0); // Adjust the timeout duration as needed
 
@@ -46,13 +46,12 @@ class _AddProductPageState extends State<AddProductPage> {
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               // Still waiting for the execution to complete
               return const AlertDialog(
-                
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Loader(),
                     SizedBox(height: 16),
-                    Text('Adding product...'),
+                    Text('Editing product...'),
                   ],
                 ),
               );
@@ -60,7 +59,7 @@ class _AddProductPageState extends State<AddProductPage> {
               // Timeout occurred
               Navigator.pop(context); // Close the dialog
               // Handle timeout, you can show an error message or take appropriate action
-              debugPrint('Save changes timed out');
+              showSnackBar(context,'Save changes timed out');
             }
             return Container(); // Placeholder, you can customize the UI based on your needs
           },
@@ -70,21 +69,15 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   Future<void> submitForm() async {
-    if (pickedImage == null) {
-      setState(() {
-        selectedImage = false;
-      });
-      Navigator.pop(context);
-      return;
-    }
-    if (formKey.currentState!.validate()){
-      await adminServices.addProduct(
+    if(formKey.currentState!.validate()) {
+    await adminServices.editProduct(
         context: context,
+        id: widget.productData.id,
         name: productNameController.text,
         description: descriptionController.text,
         price: double.parse(priceController.text),
         image: pickedImage ?? File(''),
-        onProductAdded: widget.onProductAdded,
+        onProductUpdated: widget.onProductUpdated,
       );
     }
   }
@@ -97,9 +90,8 @@ class _AddProductPageState extends State<AddProductPage> {
         var selected = File(image.path);
         setState(() {
           pickedImage = selected;
-          selectedImage = true;
         });
-      } 
+      }
     } else if (kIsWeb) {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -108,7 +100,6 @@ class _AddProductPageState extends State<AddProductPage> {
         setState(() {
           webImage = f;
           pickedImage = File(image.path);
-          selectedImage = true;
         });
       }
     } else {
@@ -117,12 +108,20 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   @override
+  void initState() {
+    productNameController.text = widget.productData.name;
+    descriptionController.text = widget.productData.description;
+    priceController.text = widget.productData.price.toString();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double dialogWidth = MediaQuery.of(context).size.width * 0.3;
     return AlertDialog(
       surfaceTintColor: Colors.transparent,
       backgroundColor: AppColor.white,
-      title: const Text('Add Product'),
+      title: const Text('Edit Product'),
       shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
       content: SingleChildScrollView(
         child: Form(
@@ -138,9 +137,6 @@ class _AddProductPageState extends State<AddProductPage> {
               GestureDetector(
                 onTap: selectImage,
                 child: DottedBorder(
-                  color: selectedImage 
-                      ? const Color.fromARGB(255, 96, 96, 96)
-                      : const Color.fromRGBO(255, 0, 0, 1),
                   dashPattern: const [10, 4],
                   strokeCap: StrokeCap.round,
                   child: Container(
@@ -152,32 +148,10 @@ class _AddProductPageState extends State<AddProductPage> {
                         ),
                       ),
                       child: pickedImage == null
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.upload_file,
-                                    size: 40,
-                                    color: selectedImage
-                                      ? Colors.black
-                                      : Colors.red,
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    selectedImage
-                                        ? "Upload Image Here"
-                                        : "Please select an image",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: selectedImage
-                                        ? Colors.grey[800]
-                                        : Colors.red[800],
-                                    ),
-                                  ),
-                                ],
-                              )
+                          ? Image.network(
+                              widget.productData.image,
+                              fit: BoxFit.fill,
+                            )
                           : kIsWeb
                               ? Image.memory(webImage, fit: BoxFit.fill)
                               : Image.file(
@@ -207,16 +181,9 @@ class _AddProductPageState extends State<AddProductPage> {
                 height: 10,
               ),
               // Add Product Quantity
-              CustomTextField(
-                controller: priceController, 
-                hintText: 'Price'
-              ),
+              CustomTextField(controller: priceController, hintText: 'Price'),
               const SizedBox(height: 10),
 
-              // ElevatedButton(
-              //   onPressed: _selectImage,
-              //   child: Text('Upload Image'),
-              // ),
             ],
           ),
         ),
@@ -231,10 +198,10 @@ class _AddProductPageState extends State<AddProductPage> {
         ElevatedButton(
           onPressed: () {
             if (formKey.currentState!.validate()) {  
-              addProduct();
+              editProduct();
             }
           },
-          child: const Text('Add'),
+          child: const Text('Edit'),
         ),
       ],
     );

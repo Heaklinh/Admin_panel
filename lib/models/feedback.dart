@@ -2,38 +2,31 @@ import 'dart:convert';
 
 class UserFeedback {
   final String userID;
-  final DateTime date;
-  final String feedback;
+  final int sentDate;
+  final String userFeedback;
+  final String? id;
   UserFeedback({
     required this.userID,
-    required this.date,
-    required this.feedback,
+    required this.sentDate,
+    required this.userFeedback,
+    this.id
   });
-  UserFeedback copyWith({
-    String? userID,
-    DateTime? date,
-    String? feedback,
-  }) {
-    return UserFeedback(
-      userID: userID ?? this.userID,
-      date: date ?? this.date,
-      feedback: feedback ?? this.feedback,
-    );
-  }
-
+  
   Map<String, dynamic> toMap() {
     return {
       'userID': userID,
-      'date': date,
-      'feedback': feedback,
+      'sentDate': sentDate,
+      'userFeedback': userFeedback,
+      'id': id,
     };
   }
 
   factory UserFeedback.fromMap(Map<String, dynamic> map) {
     return UserFeedback(
       userID: map['userID'] ?? '',
-      date: map['date'] ?? '',
-      feedback: map['feedback'] ?? '',
+      sentDate: map['sentDate'] ?? '',
+      userFeedback: map['userFeedback'] ?? '',
+      id: map['_id'] ?? '',
     );
   }
 

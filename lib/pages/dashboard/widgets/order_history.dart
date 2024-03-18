@@ -5,6 +5,7 @@ import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
@@ -20,19 +21,7 @@ class OrderHistory extends StatefulWidget {
 
 class _OrderHistoryState extends State<OrderHistory> {
   final TextEditingController textController = TextEditingController();
-  List<Order>? orders;
-  List<Product>? productList;
   final AdminServices adminServices = AdminServices();
-  final columns = ['Name', 'Order', 'Order Number', 'Total', 'Eidt'];
-  List<DataColumn> getColumns(List<String> columns) => columns
-      .map((String column) => DataColumn(
-            label: Text(
-              column,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, fontFamily: "Niradei"),
-            ),
-          ))
-      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +29,7 @@ class _OrderHistoryState extends State<OrderHistory> {
     CustomText customText(String text) {
       return CustomText(
         text: text,
-        size: 12,
+        size: 14,
         color: AppColor.disable,
         weight: FontWeight.normal,
       );
@@ -50,8 +39,8 @@ class _OrderHistoryState extends State<OrderHistory> {
 
       bool pFound = false;
       late Product productFound;
-      for (int i = 0; i < productList!.length; i++) {
-        final products = productList![i];
+      for (int i = 0; i < widget.productList!.length; i++) {
+        final products = widget.productList![i];
         if (products.id == order.productID) {
           productFound = products;
           pFound = true;
@@ -73,8 +62,8 @@ class _OrderHistoryState extends State<OrderHistory> {
       
       bool uFound = false;
       late User userFound;
-      for (int i = 0; i < userList!.length; i++) {
-        final users = userList![i];
+      for (int i = 0; i < widget.userList!.length; i++) {
+        final users = widget.userList![i];
         if (users.id == order.userID) {
           userFound = users;
           uFound = true;
@@ -98,7 +87,6 @@ class _OrderHistoryState extends State<OrderHistory> {
           requestedOTPCount: 0
         );
       }
-
       return DataRow(
         cells: [
           DataCell(customText(userFound.name)),
@@ -119,6 +107,23 @@ class _OrderHistoryState extends State<OrderHistory> {
                 size: 12,
                 color: AppColor.white,
                 weight: FontWeight.bold,
+              ),
+            ),
+          ),
+          DataCell(
+            IconButton(
+              onPressed: () async {
+                bool confirmLogout = await confirm(
+                  context, 
+                  title: const Text('Delete'), 
+                  content:const Text('Are you sure you want to delete this order?')
+                );
+                if (confirmLogout) {
+                  print("Delete");
+                }
+              },
+              icon: const Icon(
+                Icons.delete_outline,
               ),
             ),
           ),
@@ -147,13 +152,32 @@ class _OrderHistoryState extends State<OrderHistory> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Row(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(
+              const CustomText(
                 text: "Order History",
-                size: 20,
+                size: 15,
                 color: AppColor.secondary,
                 weight: FontWeight.bold,
+              ),
+              TextButton(
+                onPressed: () async {
+                  bool confirmLogout = await confirm(
+                    context, 
+                    title: const Text('Clear All History'), 
+                    content:const Text('Are you sure you want to clear all the history?')
+                  );
+                  if (confirmLogout) {
+                    print("Clear");
+                  }
+                },
+                child: const CustomText(
+                  text: "Clear",
+                  size: 14,
+                  color: AppColor.secondary,
+                  weight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -198,47 +222,19 @@ class _OrderHistoryState extends State<OrderHistory> {
                       ? ColumnSize.L
                       : ColumnSize.S,
                 ),
+                DataColumn2(
+                  label: const Text(
+                    'Action',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  size: ResponsiveWidget.isSmallScreen(context)
+                      ? ColumnSize.L
+                      : ColumnSize.S,
+                ),
               ],
-              columns: getColumns(columns),
-              // [
-              //   const DataColumn2(
-              //     label: Text(
-              //       'Name',
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //     size: ColumnSize.L,
-              //   ),
-              //   const DataColumn(
-              //     label: Text(
-              //       'Order',
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              //   const DataColumn(
-              //     label: Text(
-              //       'Order No.',
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              //   const DataColumn(
-              //     label: Text(
-              //       'Total',
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              //   DataColumn2(
-              //     label: const Text(
-              //       'Status',
-              //       style: TextStyle(fontWeight: FontWeight.bold),
-              //     ),
-              //     size: ResponsiveWidget.isSmallScreen(context)
-              //         ? ColumnSize.L
-              //         : ColumnSize.S,
-              //   ),
-              // ],
               rows: List<DataRow>.generate(
-                orderHistoryList!.length,
-                (index) => buildDataRow(orderHistoryList![index]),
+                widget.orderHistoryList!.length,
+                (index) => buildDataRow(widget.orderHistoryList![index]),
               ),
             ),
           ),
