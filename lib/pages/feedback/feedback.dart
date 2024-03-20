@@ -1,11 +1,13 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/feedback/widget/user_review_cart.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -44,6 +46,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
     fetchAllFeedback(); // Fetch the updated list of products
   }
 
+  Future<void> clearAllFeedback() async {
+
+    await Future.forEach(feedback!, (UserFeedback feedbackItem) async{
+      await adminServices.deleteFeedback(
+        context: context, 
+        feedback: feedbackItem, 
+        onSuccess: _handleFeedbackDeleted
+      );
+    });
+
+    setState(() {
+      Navigator.pop(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,6 +80,30 @@ class _FeedbackPageState extends State<FeedbackPage> {
             ),
           ),
           const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () async {
+                  bool confirmLogout = await confirm(
+                    context, 
+                    title: const Text('Clear All Feedback'), 
+                    content:const Text('Are you sure you want to clear all the feedback?')
+                  );
+                  if (confirmLogout) {
+                    if(!context.mounted) return;
+                    waitingDialog(context, clearAllFeedback, "Clearing All Feedback...");
+                  }
+                },
+                child: const CustomText(
+                  text: "Clear",
+                  size: 14,
+                  color: AppColor.secondary,
+                  weight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
 
           Expanded(
               child: feedback == null || userList == null
