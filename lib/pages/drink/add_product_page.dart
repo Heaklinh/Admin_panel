@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:admin_panel/common/widgets/custom_textfield.dart';
-import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
 import 'package:admin_panel/services/admin_services.dart';
@@ -9,6 +8,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
 
 class AddProductPage extends StatefulWidget {
 
@@ -31,43 +31,7 @@ class _AddProductPageState extends State<AddProductPage> {
   Uint8List webImage = Uint8List(8);
   bool selectedImage = true;
 
-  void addProduct() {
-    const Duration timeoutDuration =
-        Duration(seconds: 0); // Adjust the timeout duration as needed
-
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return FutureBuilder(
-          future: Future.delayed(timeoutDuration, () => submitForm()),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              // Still waiting for the execution to complete
-              return const AlertDialog(
-                
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Loader(),
-                    SizedBox(height: 16),
-                    Text('Adding product...'),
-                  ],
-                ),
-              );
-            } else {
-              // Timeout occurred
-              Navigator.pop(context); // Close the dialog
-              // Handle timeout, you can show an error message or take appropriate action
-              debugPrint('Save changes timed out');
-            }
-            return Container(); // Placeholder, you can customize the UI based on your needs
-          },
-        );
-      },
-    );
-  }
+  
 
   Future<void> submitForm() async {
     if (pickedImage == null) {
@@ -231,7 +195,7 @@ class _AddProductPageState extends State<AddProductPage> {
         ElevatedButton(
           onPressed: () {
             if (formKey.currentState!.validate()) {  
-              addProduct();
+              waitingDialog(context, submitForm, "Adding Product...");
             }
           },
           child: const Text('Add'),

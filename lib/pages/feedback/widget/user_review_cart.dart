@@ -1,4 +1,5 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/services/admin_services.dart';
@@ -21,51 +22,14 @@ class UserReviewCard extends StatelessWidget {
 
   final AdminServices adminServices = AdminServices();
 
-  void deleteFeedback() {
-    submitForm();
-    const Duration timeoutDuration =
-        Duration(seconds: 2); // Adjust the timeout duration as needed
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return FutureBuilder(
-          future: Future.delayed(timeoutDuration),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              // Execution completed within the timeout duration
-              Navigator.pop(context); // Close the dialog
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              // Still waiting for the execution to complete
-              return const AlertDialog(
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Deleting feedback...'),
-                  ],
-                ),
-              );
-            } else {
-              // Timeout occurred
-              Navigator.pop(context); // Close the dialog
-              // Handle timeout, you can show an error message or take appropriate action
-              debugPrint('Save changes timed out');
-            }
-            return Container(); // Placeholder, you can customize the UI based on your needs
-          },
-        );
-      },
-    );
-  }
-
-  void submitForm() {
-    adminServices.deleteFeedback(
+  Future<void> submitForm()async{
+    await adminServices.deleteFeedback(
       context: context,
       feedback: feedbackData,
       onSuccess: onFeedbackDeleted,
     );
+    if(!context.mounted) return;
+    Navigator.pop(context);
   }
 
   @override
@@ -100,7 +64,8 @@ class UserReviewCard extends StatelessWidget {
                     content:const Text('Are you sure you want to delete this feedback?')
                   );
                   if (confirmLogout) {
-                    deleteFeedback();
+                    if(!context.mounted) return;
+                    waitingDialog(context, submitForm, "Deleting Product...");
                   }
                 },
               ),

@@ -147,7 +147,7 @@ class AdminServices {
     return productList;
   }
 
-  void deleteProduct(
+  Future<void> deleteProduct(
       {required BuildContext context,
       required Product product,
       required VoidCallback onSuccess}) async {
@@ -168,6 +168,7 @@ class AdminServices {
           context: context,
           onSuccess: () {
             onSuccess();
+            Navigator.pop(context);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -265,7 +266,7 @@ class AdminServices {
   }
 
   //Delete Feedback
-  void deleteFeedback(
+  Future<void> deleteFeedback(
       {required BuildContext context,
       required UserFeedback feedback,
       required VoidCallback onSuccess}) async {

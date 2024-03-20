@@ -10,7 +10,7 @@ class CustomTextInput extends StatefulWidget {
   final bool isEdit;
   final String existingText;
   final String label;
-  CustomTextInput(
+  const CustomTextInput(
       {super.key,
       required this.controller,
       required this.hintText,

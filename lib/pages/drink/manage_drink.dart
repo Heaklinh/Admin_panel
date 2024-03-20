@@ -1,5 +1,6 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/pages/drink/add_product_page.dart';
 import 'package:admin_panel/pages/drink/edit_product.dart';
@@ -19,6 +20,7 @@ class ManageDrink extends StatefulWidget {
 class _ManageDrinkState extends State<ManageDrink> {
   List<Product>? products;
   final AdminServices adminServices = AdminServices();
+  late Product selectedProduct;
 
   @override
   void initState() {
@@ -35,10 +37,10 @@ class _ManageDrinkState extends State<ManageDrink> {
     fetchAllProducts(); // Fetch the updated list of products
   }
 
-  void deleteProduct(Product product, int index) {
-    adminServices.deleteProduct(
+  Future<void> deleteProduct()async {
+    await adminServices.deleteProduct(
       context: context,
-      product: product,
+      product: selectedProduct,
       onSuccess: () {
         _handleProductAdded();
       },
@@ -242,7 +244,9 @@ class _ManageDrinkState extends State<ManageDrink> {
                                               content:const Text('Are you sure you want to delete this product?')
                                             );
                                             if (confirmLogout) {
-                                              deleteProduct(productData, index);
+                                              if(!context.mounted) return;
+                                              selectedProduct = productData;
+                                              waitingDialog(context, deleteProduct, "Deleting Product...");
                                             }
                                           },
                                           icon: const Icon(
