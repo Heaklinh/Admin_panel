@@ -1,6 +1,9 @@
-
-import 'package:admin_panel/pages/drink/manage_drink.dart';
+import 'package:admin_panel/common/widgets/loader.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
+import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/widgets/custom_text.dart';
+import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget {
@@ -11,21 +14,42 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  AdminServices adminServices = AdminServices();
+  MaintainToggle? maintainToggle;
+  bool isSwitch = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMaintainToggle();
+  }
+
+  fetchMaintainToggle() async {
+    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: isSwitch);
+    setState(() {
+      isSwitch = maintainToggle!.toggle;
+    });
+  }
+
+  Future<void> updateMaintainToggle() async {
+    await adminServices.updateMaintainToggle(
+      context: context,
+      toggle: isSwitch,
+    );
+    setState(() {});
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return maintainToggle == null
+    ? const Loader()
+    : Column (
       children: [
         Row(
           children: [
             Container(
               margin: EdgeInsets.only(
                   top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-              // child: CustomText(
-              //   text: menuController.activeItem,
-              //   size: 24,
-              //   color: AppColor.secondary,
-              //   weight: FontWeight.bold,
-              // ),
             )
           ],
         ),
@@ -35,8 +59,35 @@ class _SettingPageState extends State<SettingPage> {
         // const Expanded(
         //   child: CardLargeScreen(),
         // )
-        const Expanded(
-          child: ManageDrink(),
+        SizedBox(
+          child: isSwitch == true
+          ? Container(
+              color: Colors.red,
+              child: const CustomText(
+                text: "The server is currently under maintenance.",
+                size: 24,
+                color: Colors.white,
+                weight: FontWeight.bold,
+              ),
+            )
+          : const CustomText(
+            text: "",
+            size: 1,
+            color: Colors.white,
+            weight: FontWeight.bold,
+          )
+        ),
+        const Text("Maintain the app"),
+        Expanded(
+          child: Switch(
+            value: isSwitch, 
+            onChanged: (value){
+              setState(() {
+                isSwitch = value;
+              });
+              waitingDialog(context, updateMaintainToggle, "Saving Changes...");
+            }
+          )
         )
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/user.dart';
@@ -31,12 +32,20 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   AdminServices adminServices = AdminServices();
 
+  MaintainToggle? maintainToggle;
+  
+  fetchMaintainToggle() async {
+    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     fetchAllOrders();
     fetchAllProducts();
     fetchAllUsers();
+    fetchMaintainToggle();
   }
 
   fetchAllProducts() async {
@@ -83,7 +92,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   
   @override
   Widget build(BuildContext context) {
-    return orderList == null || productList == null || userList == null
+    return orderList == null || productList == null || userList == null || maintainToggle == null
       ? const Loader()
       : Padding(
       padding: const EdgeInsets.all(8.0),
@@ -103,8 +112,28 @@ class _AdminDashboardState extends State<AdminDashboard> {
               )
             ],
           ),
+          SizedBox(
+            child: maintainToggle!.toggle == true
+            ? Container(
+                color: Colors.red,
+                child: const CustomText(
+                  text: "The server is currently under maintenance.",
+                  size: 24,
+                  color: Colors.white,
+                  weight: FontWeight.bold,
+                ),
+              )
+            : const CustomText(
+              text: "",
+              size: 1,
+              color: Colors.white,
+              weight: FontWeight.bold,
+            )
+          ),
+          const SizedBox(height: 20,),
           Expanded(
             child: ListView(
+              padding: const EdgeInsets.all(0),
               children: [
                 if (ResponsiveWidget.isLargeScreen(context) ||
                     ResponsiveWidget.isMediumScreen(context))

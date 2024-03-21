@@ -3,6 +3,7 @@ import 'package:admin_panel/pages/dashboard/dashboard.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:admin_panel/pages/feedback/feedback.dart';
 import 'package:admin_panel/pages/orders/current_order_screen.dart';
+import 'package:admin_panel/pages/setting/settings.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/pages/widgets/top_nav_bar.dart';
 import 'package:admin_panel/services/admin_services.dart';
@@ -29,9 +30,7 @@ class _SideBarState extends State<SideBar> {
     const ManageDrink(),
     const CurrentOrderPage(),
     const FeedbackPage(),
-    const Center(
-      child: Text('Setting'),
-    ),
+    const SettingPage()
   ];
 
   void updatePage(int page) {
