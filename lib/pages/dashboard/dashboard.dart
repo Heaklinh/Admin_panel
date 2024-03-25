@@ -36,7 +36,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
   
   fetchMaintainToggle() async {
     maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   @override

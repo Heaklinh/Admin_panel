@@ -29,7 +29,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
   
   fetchMaintainToggle() async {
     maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   @override
@@ -42,12 +44,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   fetchAllFeedback() async {
     feedback = await adminServices.fetchAllFeedback(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
   
   fetchAllUsers() async {
     userList = await adminServices.fetchAllUsers(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   void _handleFeedbackDeleted() {
@@ -74,23 +80,24 @@ class _FeedbackPageState extends State<FeedbackPage> {
     if(maintainToggle == null){
       return const Loader();
     }else{
-      return Container(
+      return Padding(
         padding: const EdgeInsets.all(8.0),
-        color: AppColor.white,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: EdgeInsets.only(
-                  top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-              child: const CustomText(
-                text: "Feedback",
-                size: 24,
-                color: AppColor.secondary,
-                weight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                      top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
+                  child: const CustomText(
+                    text: "Feedback",
+                    size: 24,
+                    color: AppColor.secondary,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
             SizedBox(
               child: maintainToggle!.toggle == true
               ? Container(
@@ -110,7 +117,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               )
             ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () async {
@@ -138,6 +145,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 child: feedback == null || userList == null
                 ? const Loader()
                 : ListView.builder(
+                  padding: const EdgeInsets.all(0),
                   itemCount: feedback!.length,
                   itemBuilder: (context, index) {
 

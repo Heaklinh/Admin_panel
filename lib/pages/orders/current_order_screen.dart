@@ -27,9 +27,12 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   List<User>? userList;
   final AdminServices adminServices = AdminServices();
   MaintainToggle? maintainToggle;
+  
   fetchMaintainToggle() async {
     maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   final List<String> sortItems = [
@@ -52,17 +55,23 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
 
   fetchAllProducts() async {
     productList = await adminServices.fetchAllProducts(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   fetchAllUsers() async {
     userList = await adminServices.fetchAllUsers(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   fetchAllOrders() async {
     orders = await adminServices.fetchAllOrders(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   fetchSearchUser(String search) async {

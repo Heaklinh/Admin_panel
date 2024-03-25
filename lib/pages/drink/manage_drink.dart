@@ -34,7 +34,9 @@ class _ManageDrinkState extends State<ManageDrink> {
 
   fetchAllProducts() async {
     products = await adminServices.fetchAllProducts(context);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
   void _handleProductAdded() {
@@ -53,7 +55,9 @@ class _ManageDrinkState extends State<ManageDrink> {
   
   fetchMaintainToggle() async {
     maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
-    setState(() {});
+    if(context.mounted){
+      setState(() {});
+    }
   }
 
 
