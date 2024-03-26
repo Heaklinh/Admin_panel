@@ -1,5 +1,7 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/show_snack_bar.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
@@ -27,6 +29,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   List<User>? userList;
   final AdminServices adminServices = AdminServices();
   MaintainToggle? maintainToggle;
+  late Order orderData;
   
   fetchMaintainToggle() async {
     maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
@@ -108,6 +111,21 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
       statusText = "Done";
     }
     return statusText;
+  }
+
+  void handleOrderDeleted() {
+    fetchAllOrders();
+  }
+
+  Future<void> deleteOrder()async{
+    await adminServices.deleteOrder(
+      context: context,
+      order: orderData,
+      onSuccess: handleOrderDeleted,
+    );
+    if(!context.mounted) return;
+    Navigator.pop(context);
+    showSnackBar(context, "Order deleted successfully");
   }
 
   @override
@@ -248,7 +266,9 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                   content:const Text('Are you sure you want to delete this order?')
                 );
                 if (confirmLogout) {
-                  print("Delete");
+                  orderData = order;
+                  if(!context.mounted) return;
+                  waitingDialog(context, deleteOrder, "Deleting Order...");
                 }
               },
               icon: const Icon(

@@ -72,6 +72,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
     }
   }
 
+  void handleOrderDeleted(){
+    fetchAllOrders();
+  }
+
   // Function to categorize orders based on their status
   void categorizeOrders(List<Order>? orders) {
     orderQueueList = [];
@@ -143,8 +147,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     OverviewCardMediumScreen(
                       orderQueueList: orderQueueList, 
                       inStorage: inStorage, 
-                      orderHistoryList: 
-                      orderHistoryList, 
+                      orderHistoryList: orderHistoryList, 
                       orderList: orderList
                     )
                   else
@@ -165,7 +168,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   RevenueSectionSmall(orderList: orderList)
                 else
                   RevenueSectionLarge(orderList: orderList),
-                OrderHistory(orderHistoryList: orderHistoryList, productList: productList, userList: userList)
+                OrderHistory(orderHistoryList: orderHistoryList, productList: productList, userList: userList, onOrderDeleted: handleOrderDeleted)
               ],
             ),
           ),

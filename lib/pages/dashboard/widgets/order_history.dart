@@ -1,4 +1,6 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/show_snack_bar.dart';
+import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/user.dart';
@@ -13,7 +15,8 @@ class OrderHistory extends StatefulWidget {
   final List<Order>? orderHistoryList;
   final List<Product>? productList;
   final List<User>? userList;
-  const OrderHistory({super.key, required this.orderHistoryList, required this.productList, required this.userList});
+  final VoidCallback onOrderDeleted;
+  const OrderHistory({super.key, required this.orderHistoryList, required this.productList, required this.userList, required this.onOrderDeleted});
 
   @override
   State<OrderHistory> createState() => _OrderHistoryState();
@@ -22,6 +25,35 @@ class OrderHistory extends StatefulWidget {
 class _OrderHistoryState extends State<OrderHistory> {
   final TextEditingController textController = TextEditingController();
   final AdminServices adminServices = AdminServices();
+  late Order orderData;
+
+  Future<void> deleteOrder()async{
+    await adminServices.deleteOrder(
+      context: context,
+      order: orderData,
+      onSuccess: widget.onOrderDeleted,
+    );
+    if(!context.mounted) return;
+    Navigator.pop(context);
+    showSnackBar(context, "Order deleted successfully");
+  }
+
+  Future<void> clearAllOrder() async {
+
+    await Future.forEach(widget.orderHistoryList!, (Order order) async{
+      await adminServices.deleteOrder(
+        context: context, 
+        order: order, 
+        onSuccess: widget.onOrderDeleted
+      );
+    });
+
+    setState(() {
+      Navigator.pop(context);
+    });
+    if(!context.mounted) return;
+    showSnackBar(context, "All history order has been clear");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +151,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                   content:const Text('Are you sure you want to delete this order?')
                 );
                 if (confirmLogout) {
-                  print("Delete");
+                  orderData = order;
+                  if(!context.mounted) return;
+                  waitingDialog(context, deleteOrder, "Deleting Order...");
                 }
               },
               icon: const Icon(
@@ -168,8 +202,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                     title: const Text('Clear All History'), 
                     content:const Text('Are you sure you want to clear all the history?')
                   );
-                  if (confirmLogout) {
-                    print("Clear");
+                  if (confirmLogout) {  
+                    if(!context.mounted) return;
+                    waitingDialog(context, clearAllOrder, "Clearing Orders...");
                   }
                 },
                 child: const CustomText(

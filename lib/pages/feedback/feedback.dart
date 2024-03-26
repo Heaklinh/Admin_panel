@@ -1,5 +1,6 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/show_snack_bar.dart';
 import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/maintain_toggle.dart';
@@ -73,6 +74,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
     setState(() {
       Navigator.pop(context);
     });
+    if(!context.mounted) return;
+    showSnackBar(context, "All feedback has been clear");
   }
 
   @override

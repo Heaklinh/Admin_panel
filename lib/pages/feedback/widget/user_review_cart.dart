@@ -1,4 +1,5 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/constants/show_snack_bar.dart';
 import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/user.dart';
@@ -30,6 +31,7 @@ class UserReviewCard extends StatelessWidget {
     );
     if(!context.mounted) return;
     Navigator.pop(context);
+    showSnackBar(context, "Feedback deleted successfully");
   }
 
   @override
@@ -61,11 +63,11 @@ class UserReviewCard extends StatelessWidget {
                   bool confirmLogout = await confirm(
                     context, 
                     title: const Text('Delete'), 
-                    content:const Text('Are you sure you want to delete this feedback?')
+                    content:const Text('Are you sure you want to delete this Feedback?')
                   );
                   if (confirmLogout) {
                     if(!context.mounted) return;
-                    waitingDialog(context, submitForm, "Deleting Product...");
+                    waitingDialog(context, submitForm, "Deleting Feedback...");
                   }
                 },
               ),
