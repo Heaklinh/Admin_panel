@@ -148,6 +148,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 child: feedback == null || userList == null
                 ? const Loader()
                 : ListView.builder(
+                  primary: true,
                   padding: const EdgeInsets.all(0),
                   itemCount: feedback!.length,
                   itemBuilder: (context, index) {

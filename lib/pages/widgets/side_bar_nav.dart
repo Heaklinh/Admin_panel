@@ -3,6 +3,7 @@ import 'package:admin_panel/pages/dashboard/dashboard.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:admin_panel/pages/feedback/feedback.dart';
 import 'package:admin_panel/pages/orders/current_order_screen.dart';
+import 'package:admin_panel/pages/refund/refunded_page.dart';
 import 'package:admin_panel/pages/setting/settings.dart';
 import 'package:admin_panel/pages/user/manage_user_screen.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
@@ -31,6 +32,7 @@ class _SideBarState extends State<SideBar> {
     const ManageDrink(),
     const CurrentOrderPage(),
     const ManageUserPage(),
+    const RefundedOrderPage(),
     const FeedbackPage(),
     const SettingPage()
   ];
@@ -87,7 +89,11 @@ class _SideBarState extends State<SideBar> {
               ),
               SideNavigationBarItem(
                 icon: Icons.manage_accounts,
-                label: 'Users',
+                label: 'Manage Users',
+              ),
+              SideNavigationBarItem(
+                icon: Icons.payment,
+                label: 'Refund History',
               ),
               SideNavigationBarItem(
                 icon: Icons.feedback,
@@ -117,7 +123,7 @@ class _SideBarState extends State<SideBar> {
                   ),
             ),
             onTap: (index) async {
-              if (index == 6) {
+              if (index == 7) {
                 bool confirmLogout = await confirm(
                   context, 
                   title: const Text('Logout'), 

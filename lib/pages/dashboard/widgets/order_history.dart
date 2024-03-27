@@ -38,6 +38,17 @@ class _OrderHistoryState extends State<OrderHistory> {
     showSnackBar(context, "Order deleted successfully");
   }
 
+  Future<void> refundOrder()async{
+    await adminServices.refundOrder(
+      context: context,
+      order: orderData,
+      onSuccess: widget.onOrderDeleted,
+    );
+    if(!context.mounted) return;
+    Navigator.pop(context);
+    showSnackBar(context, "Order refunded successfully");
+  }
+
   Future<void> clearAllOrder() async {
 
     await Future.forEach(widget.orderHistoryList!, (Order order) async{
@@ -143,23 +154,44 @@ class _OrderHistoryState extends State<OrderHistory> {
             ),
           ),
           DataCell(
-            IconButton(
-              onPressed: () async {
-                bool confirmLogout = await confirm(
-                  context, 
-                  title: const Text('Delete'), 
-                  content:const Text('Are you sure you want to delete this order?')
-                );
-                if (confirmLogout) {
-                  orderData = order;
-                  if(!context.mounted) return;
-                  waitingDialog(context, deleteOrder, "Deleting Order...");
-                }
-              },
-              icon: const Icon(
-                Icons.delete_outline,
-              ),
-            ),
+             Row(
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    bool confirmLogout = await confirm(
+                      context, 
+                      title: const Text('Delete'), 
+                      content:const Text('Are you sure you want to delete this order?')
+                    );
+                    if (confirmLogout) {
+                      orderData = order;
+                      if(!context.mounted) return;
+                      waitingDialog(context, deleteOrder, "Deleting Order...");
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.delete_outline,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    bool confirmLogout = await confirm(
+                      context, 
+                      title: const Text('Refund Order'), 
+                      content:const Text('Are you sure you want to refund this order?')
+                    );
+                    if (confirmLogout) {
+                      orderData = order;
+                      if(!context.mounted) return;
+                      waitingDialog(context, refundOrder, "Refunding Order...");
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.monetization_on,
+                  ),
+                ),
+              ],
+            )
           ),
         ],
       );

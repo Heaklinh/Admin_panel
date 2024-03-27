@@ -65,7 +65,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
   
   fetchAllOrders() async {
+    List<Order>? tmpOrders = [];
     orderList = await adminServices.fetchAllOrders(context);
+    for(int i = 0; i < orderList!.length; i++){
+      if(orderList![i].isRefunded == false){
+        tmpOrders.add(orderList![i]);
+      }
+    }
+    orderList = tmpOrders;
     categorizeOrders(orderList); // Call getOrderStatus when fetching orders
     if(context.mounted){
       setState(() {});
@@ -89,7 +96,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           orderQueueList!.add(orders[i]);
         } else if (status == 3) {
           inStorage!.add(orders[i]);
-        } else {
+        } else if (status == 4) {
           orderHistoryList!.add(orders[i]);
         }
       }
@@ -139,6 +146,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           const SizedBox(height: 20,),
           Expanded(
             child: ListView(
+              primary: true,
               padding: const EdgeInsets.all(0),
               children: [
                 if (ResponsiveWidget.isLargeScreen(context) ||

@@ -14,14 +14,14 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
-class CurrentOrderPage extends StatefulWidget {
-  const CurrentOrderPage({super.key});
+class RefundedOrderPage extends StatefulWidget {
+  const RefundedOrderPage({super.key});
 
   @override
-  State<CurrentOrderPage> createState() => _CurrentOrderPageState();
+  State<RefundedOrderPage> createState() => _RefundedOrderPageState();
 }
 
-class _CurrentOrderPageState extends State<CurrentOrderPage> {
+class _RefundedOrderPageState extends State<RefundedOrderPage> {
   final TextEditingController textController = TextEditingController();
 
   List<Order>? orders;
@@ -74,27 +74,6 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
     orders = await adminServices.fetchAllOrders(context);
     if(context.mounted){
       setState(() {});
-    }
-  }
-
-  fetchSearchUser(String search) async {
-    userList = await adminServices.fetchSearchUser(context: context, searchQuery: search);
-    if (userList != null && userList!.isNotEmpty) {
-      List<Order>? tmpOrders = [];
-
-      if (orders != null) {
-        for (int i = 0; i < orders!.length; i++) {
-          for(int j = 0; j < userList!.length; j++){
-            if (orders![i].userID == userList![j].id) {
-              tmpOrders.add(orders![i]);
-            }
-          }
-        }
-      }
-
-      setState(() {
-        orders = tmpOrders;
-      });
     }
   }
 
@@ -271,6 +250,13 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
             ),
           ),
           DataCell(
+            Text(
+              order.isRefunded.toString(),
+              style: const TextStyle(
+                  fontSize: 14),
+            ),
+          ),
+          DataCell(
             Row(
               children: [
                 IconButton(
@@ -294,13 +280,13 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                   onPressed: () async {
                     bool confirmLogout = await confirm(
                       context, 
-                      title: const Text('Refund Order'), 
-                      content:const Text('Are you sure you want to refund this order?')
+                      title: const Text('Undo Refund Order'), 
+                      content:const Text('Are you sure you want to undo refund this order?')
                     );
                     if (confirmLogout) {
                       orderData = order;
                       if(!context.mounted) return;
-                      waitingDialog(context, refundOrder, "Refunding Order...");
+                      waitingDialog(context, refundOrder, "Undoing Refund Order...");
                     }
                   },
                   icon: const Icon(
@@ -328,7 +314,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                   margin: EdgeInsets.only(
                       top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
                   child: const CustomText(
-                    text: "Incoming Orders",
+                    text: "Refund History",
                     size: 24,
                     color: AppColor.secondary,
                     weight: FontWeight.bold,
@@ -387,21 +373,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                               waitingDialog(context, ()async{
                                 userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
                                 if (userList != null && userList!.isNotEmpty) {
-                                  List<Order>? tmpOrders = [];
-
-                                  if (orders != null) {
-                                    for (int i = 0; i < orders!.length; i++) {
-                                      for(int j = 0; j < userList!.length; j++){
-                                        if (orders![i].userID == userList![j].id) {
-                                          tmpOrders.add(orders![i]);
-                                        }
-                                      }
-                                    }
-                                  }
-
-                                  setState(() {
-                                    orders = tmpOrders;
-                                  });
+                                  setState(() {});
                                 }
                                 if(!context.mounted) return;
                                 Navigator.pop(context);
@@ -409,10 +381,22 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                               , "Searching User...");
                             }else{     
                               waitingDialog(context, () async {
-                                productList = await adminServices.fetchAllProducts(context);
-                                if(!context.mounted) return;
                                 orders = await adminServices.fetchAllOrders(context);
+                                if(context.mounted){
+                                  setState(() {});
+                                }
                                 if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }, "Searching User...");
+                              waitingDialog(context, () async {
+                                productList = await adminServices.fetchAllProducts(context);
+                                if(context.mounted){
+                                  setState(() {});
+                                }
+                                if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }, "Searching User...");
+                              waitingDialog(context, () async {
                                 userList = await adminServices.fetchAllUsers(context);
                                 if(context.mounted){
                                   setState(() {});
@@ -420,7 +404,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                 if(!context.mounted) return;
                                 Navigator.pop(context);
                               }, "Searching User...");
-                            }    
+                            }
                           },
                           decoration: InputDecoration(
                               hintText: "Search user",
@@ -457,21 +441,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                               waitingDialog(context, ()async{
                                 userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
                                 if (userList != null && userList!.isNotEmpty) {
-                                  List<Order>? tmpOrders = [];
-
-                                  if (orders != null) {
-                                    for (int i = 0; i < orders!.length; i++) {
-                                      for(int j = 0; j < userList!.length; j++){
-                                        if (orders![i].userID == userList![j].id) {
-                                          tmpOrders.add(orders![i]);
-                                        }
-                                      }
-                                    }
-                                  }
-
-                                  setState(() {
-                                    orders = tmpOrders;
-                                  });
+                                  setState(() {});
                                 }
                                 if(!context.mounted) return;
                                 Navigator.pop(context);
@@ -480,9 +450,21 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                             }else{     
                               waitingDialog(context, () async {
                                 orders = await adminServices.fetchAllOrders(context);
+                                if(context.mounted){
+                                  setState(() {});
+                                }
                                 if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }, "Searching User...");
+                              waitingDialog(context, () async {
                                 productList = await adminServices.fetchAllProducts(context);
+                                if(context.mounted){
+                                  setState(() {});
+                                }
                                 if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }, "Searching User...");
+                              waitingDialog(context, () async {
                                 userList = await adminServices.fetchAllUsers(context);
                                 if(context.mounted){
                                   setState(() {});
@@ -490,7 +472,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                 if(!context.mounted) return;
                                 Navigator.pop(context);
                               }, "Searching User...");
-                            }                          
+                            }
                           },
                           decoration: InputDecoration(
                               hintText: "Search user",
@@ -528,9 +510,9 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                         SizedBox(
                           height: ResponsiveWidget.isSmallScreen(context) ? (56 * 5) + 100 : (56 * 7) + 40 ,
                           child: DataTable2(
-                            columnSpacing: 20,
-                            horizontalMargin: 12,
-                            minWidth: 900,
+                            columnSpacing: 10,
+                            horizontalMargin: 6,
+                            minWidth: 1050,
                             dataRowHeight: 60,
                             columns: const [
                               DataColumn2(
@@ -540,23 +522,33 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                 ),
                                 size: ColumnSize.L,
                               ),
-                              DataColumn(
+                              DataColumn2(
                                 label: Text(
                                   'Total Price',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                size: ColumnSize.S,
                               ),
-                              DataColumn(
+                              DataColumn2(
                                 label: Text(
                                   'User',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                size: ColumnSize.S,
                               ),
-                              DataColumn(
+                              DataColumn2(
                                 label: Text(
                                   'Status',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                size: ColumnSize.S,
+                              ),
+                              DataColumn2(
+                                label: Text(
+                                  'Refund',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                size: ColumnSize.L,
                               ),
                               DataColumn(
                                 label: Text(
@@ -565,7 +557,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                 ),
                               ),
                             ],
-                            rows: orders!.where((order) => order.status < 4 && order.isRefunded == false).map((filteredOrder) => buildDataRow(filteredOrder)).toList(),
+                            rows: orders!.where((order) => order.isRefunded == true).map((filteredOrder) => buildDataRow(filteredOrder)).toList(),
                           ),
                         ),
                       ],

@@ -48,11 +48,6 @@ class _ManageUserPageState extends State<ManageUserPage> {
     }
   }
 
-  fetchSearchUser(String search) async {
-    userList = await adminServices.fetchSearchUser(context: context, searchQuery: search);
-    setState(() {});
-  }
-
   Future<void> deleteUser()async{
     await adminServices.deleteUser(
       context: context,
@@ -194,6 +189,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
             const SizedBox(height: 20,),
             Expanded(
               child: ListView(
+                primary: true,
                 padding: const EdgeInsets.all(0),
                 children: [
                   ResponsiveWidget.isSmallScreen(context) 
@@ -203,11 +199,26 @@ class _ManageUserPageState extends State<ManageUserPage> {
                       SizedBox(
                         width: 150,
                         child: TextFormField(
-                          onChanged: (value) async {
-                            if(value != ''){
-                              await fetchSearchUser(value);
-                            }else{
-                              await fetchAllUsers();
+                          onFieldSubmitted: (value) async {
+                            if(value.trim().isNotEmpty){
+                              waitingDialog(context, ()async{
+                                userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
+                                if (userList != null && userList!.isNotEmpty) {
+                                  setState(() {});
+                                }
+                                if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }
+                              , "Searching User...");
+                            }else{     
+                              waitingDialog(context, () async {
+                                userList = await adminServices.fetchAllUsers(context);
+                                if(context.mounted){
+                                  setState(() {});
+                                }
+                                if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }, "Searching User...");
                             }
                           },
                           decoration: InputDecoration(
@@ -226,11 +237,26 @@ class _ManageUserPageState extends State<ManageUserPage> {
                       SizedBox(
                         width: 300,
                         child: TextFormField(
-                          onChanged: (value) async {
-                            if(value != ''){
-                              await fetchSearchUser(value);
-                            }else{
-                              await fetchAllUsers();
+                          onFieldSubmitted: (value) async {
+                            if(value.trim().isNotEmpty){
+                              waitingDialog(context, ()async{
+                                userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
+                                if (userList != null && userList!.isNotEmpty) {
+                                  setState(() {});
+                                }
+                                if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }
+                              , "Searching User...");
+                            }else{     
+                              waitingDialog(context, () async {
+                                userList = await adminServices.fetchAllUsers(context);
+                                if(context.mounted){
+                                  setState(() {});
+                                }
+                                if(!context.mounted) return;
+                                Navigator.pop(context);
+                              }, "Searching User...");
                             }
                           },
                           decoration: InputDecoration(

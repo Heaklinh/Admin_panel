@@ -86,6 +86,7 @@ class _SettingPageState extends State<SettingPage> {
           const SizedBox(height: 20,),
           Expanded(
             child: ListView(
+              primary: true,
               padding: const EdgeInsets.all(0),
               children: [
                 Row(

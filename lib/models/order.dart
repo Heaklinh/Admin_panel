@@ -10,6 +10,7 @@ class Order {
   final int status;
   final int orderDate;
   final bool? isPaid;
+  final bool? isRefunded;
   final double totalPrice;
   final int deletedDate;
 
@@ -23,6 +24,7 @@ class Order {
     required this.status,
     required this.orderDate,
     required this.isPaid,
+    required this.isRefunded,
     required this.totalPrice,
     required this.deletedDate
   });
@@ -37,6 +39,7 @@ class Order {
     int? status,
     int? orderDate,
     bool? isPaid,
+    bool? isRefunded,
     double? totalPrice,
     int? deleteDate
   }) {
@@ -50,6 +53,7 @@ class Order {
         status: status ?? this.status,
         orderDate: orderDate ?? this.orderDate,
         isPaid: isPaid ?? this.isPaid,
+        isRefunded: isRefunded ?? this.isRefunded,
         totalPrice: totalPrice ?? this.totalPrice,
         deletedDate: deletedDate,
         );
@@ -68,6 +72,7 @@ class Order {
       'totalPrice': totalPrice,
       'orderNumber': orderNumber,
       'isPaid': isPaid,
+      'isRefunded': isRefunded,
       'deletedDate' : deletedDate,
     };
   }
@@ -83,7 +88,8 @@ class Order {
       orderNumber: map['orderNumber'] ?? '',
       orderDate: map['orderDate'] ?? '',
       totalPrice: map['totalPrice']?.toDouble() ?? 0.0,
-      isPaid: null,
+      isPaid: map['isPaid'],
+      isRefunded: map['isRefunded'],
       deletedDate: map['deletedDate'] ?? '',
     );
   }

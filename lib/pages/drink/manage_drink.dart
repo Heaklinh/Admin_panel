@@ -122,6 +122,7 @@ class _ManageDrinkState extends State<ManageDrink> {
                 builder: (BuildContext context, BoxConstraints constraints){
                   final scrollViewWidth = constraints.maxWidth;
                   return ListView(
+                    primary: true,
                     padding: const EdgeInsets.all(0),
                     children: [
                       Column(
