@@ -206,7 +206,7 @@ class AdminServices {
     return orderList;
   }
 
-    //Delete Feedback
+  //Delete order
   Future<void> deleteOrder(
       {required BuildContext context,
       required Order order,
@@ -215,6 +215,34 @@ class AdminServices {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       http.Response res =
           await http.post(Uri.parse('$uri/admin/delete-order'),
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'x-auth-token': userProvider.user.loginToken,
+              },
+              body: jsonEncode({
+                'id': order.id,
+              }));
+      if (!context.mounted) return;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            onSuccess();
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  //Refund order
+  Future<void> refundOrder(
+      {required BuildContext context,
+      required Order order,
+      required VoidCallback onSuccess}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res =
+          await http.post(Uri.parse('$uri/admin/refund-order'),
               headers: {
                 'Content-Type': 'application/json; charset=UTF-8',
                 'x-auth-token': userProvider.user.loginToken,
