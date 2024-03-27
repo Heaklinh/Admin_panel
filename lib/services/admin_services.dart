@@ -263,6 +263,34 @@ class AdminServices {
     }
     return userList;
   }
+  
+  Future<void> deleteUser(
+      {required BuildContext context,
+      required User user,
+      required VoidCallback onSuccess}) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      
+      http.Response res =
+          await http.post(Uri.parse('$uri/admin/delete-user'),
+              headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'x-auth-token': userProvider.user.loginToken,
+              },
+              body: jsonEncode({
+                'id': user.id,
+              }));
+      if (!context.mounted) return;
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            onSuccess();
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 
   Future<List<UserFeedback>> fetchAllFeedback(BuildContext context) async {
     List<UserFeedback> userFeedback = [];

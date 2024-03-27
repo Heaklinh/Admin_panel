@@ -84,8 +84,10 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
 
       if (orders != null) {
         for (int i = 0; i < orders!.length; i++) {
-          if (orders![i].userID == userList![0].id) {
-            tmpOrders.add(orders![i]);
+          for(int j = 0; j < userList!.length; j++){
+            if (orders![i].userID == userList![j].id) {
+              tmpOrders.add(orders![i]);
+            }
           }
         }
       }
