@@ -1,3 +1,5 @@
+lib/constants/global_variable.dart
+
 # Miscellaneous
 *.class
 *.log
