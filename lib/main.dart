@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp>{
 
   @override
   void initState() {
-    super.initState();
+    super.initState(); 
   }
 
   @override
@@ -54,11 +54,10 @@ class _MyAppState extends State<MyApp>{
             onGenerateRoute: (settings) { 
               return generateRoute(context,settings);
             },
-            home: Provider.of<UserProvider>(context).user.loginToken.isNotEmpty
-              ? Provider.of<UserProvider>(context).user.type == 'admin'
+            home: Provider.of<UserProvider>(context).user.loginToken.isNotEmpty 
+              && Provider.of<UserProvider>(context).user.type == 'admin'
                 ? const SideBar()
                 : const AuthenticationPage()
-              : const AuthenticationPage(),
           );
         } else {
           return const Loader(); // Show a loading spinner while waiting

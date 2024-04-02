@@ -410,10 +410,9 @@ class AdminServices {
           await prefs.setString(
               'x-auth-token', jsonDecode(res.body)['loginToken']);
           if (!context.mounted) return;
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
             context,
             SideBar.routeName,
-            (route) => false,
           );
         },
       );

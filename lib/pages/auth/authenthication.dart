@@ -16,9 +16,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   // final TextEditingController textController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  // final TextEditingController _confirmPasswordController =
+  //     TextEditingController();
+  // final TextEditingController _nameController = TextEditingController();
   bool _isSubmitted = false;
   final AdminServices authService = AdminServices();
 
@@ -27,8 +27,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _nameController.dispose();
+
+    // _confirmPasswordController.dispose();
+    // _nameController.dispose();
+    
   }
 
   void signInUser() {

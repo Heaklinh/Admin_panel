@@ -548,7 +548,7 @@ class _RefundedOrderPageState extends State<RefundedOrderPage> {
                                   'Refund',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                size: ColumnSize.L,
+                                size: ColumnSize.S,
                               ),
                               DataColumn(
                                 label: Text(
