@@ -5,7 +5,9 @@ import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/pages/drink/add_product_page.dart';
 import 'package:admin_panel/pages/drink/edit_product.dart';
+import 'package:admin_panel/pages/drink/services/drink_services.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -21,6 +23,8 @@ class ManageDrink extends StatefulWidget {
 class _ManageDrinkState extends State<ManageDrink> {
   List<Product>? products;
   final AdminServices adminServices = AdminServices();
+  final DrinkServices drinkServices = DrinkServices();
+  final SettingServices settingServices = SettingServices();
   late Product selectedProduct;
 
   MaintainToggle? maintainToggle;
@@ -44,7 +48,7 @@ class _ManageDrinkState extends State<ManageDrink> {
   }
 
   Future<void> deleteProduct()async {
-    await adminServices.deleteProduct(
+    await drinkServices.deleteProduct(
       context: context,
       product: selectedProduct,
       onSuccess: () {
@@ -54,7 +58,7 @@ class _ManageDrinkState extends State<ManageDrink> {
   }
   
   fetchMaintainToggle() async {
-    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
+    maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: false);
     if(context.mounted){
       setState(() {});
     }
@@ -128,6 +132,7 @@ class _ManageDrinkState extends State<ManageDrink> {
                       Column(
                         children: [
                             GridView.builder(
+                                primary: true,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: (products!.length + 1),

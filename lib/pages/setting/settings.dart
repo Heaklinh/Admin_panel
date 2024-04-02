@@ -3,6 +3,7 @@ import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   AdminServices adminServices = AdminServices();
+  SettingServices settingServices = SettingServices();
   MaintainToggle? maintainToggle;
   bool isSwitch = false;
 
@@ -26,14 +28,14 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   fetchMaintainToggle() async {
-    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: isSwitch);
+    maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: isSwitch);
     setState(() {
       isSwitch = maintainToggle!.toggle;
     });
   }
 
   Future<void> updateMaintainToggle() async {
-    await adminServices.updateMaintainToggle(
+    await settingServices.updateMaintainToggle(
       context: context,
       toggle: isSwitch,
     );

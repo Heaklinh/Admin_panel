@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:admin_panel/common/widgets/custom_textfield.dart';
 import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
-import 'package:admin_panel/services/admin_services.dart';
+import 'package:admin_panel/pages/drink/services/drink_services.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-  AdminServices adminServices = AdminServices();
+  DrinkServices drinkServices = DrinkServices();
 
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -42,7 +42,7 @@ class _AddProductPageState extends State<AddProductPage> {
       return;
     }
     if (formKey.currentState!.validate()){
-      await adminServices.addProduct(
+      await drinkServices.addProduct(
         context: context,
         name: productNameController.text,
         description: descriptionController.text,

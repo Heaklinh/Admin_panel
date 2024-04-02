@@ -8,6 +8,8 @@ import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/orders/widgets/drop_down.dart';
+import 'package:admin_panel/pages/setting/services/setting_services.dart';
+import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -27,12 +29,15 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   List<Order>? orders;
   List<Product>? productList;
   List<User>? userList;
-  final AdminServices adminServices = AdminServices();
   MaintainToggle? maintainToggle;
   late Order orderData;
+
+  final UserServices userServices = UserServices();
+  final AdminServices adminServices = AdminServices();
+  final SettingServices settingServices = SettingServices();
   
   fetchMaintainToggle() async {
-    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
+    maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: false);
     if(context.mounted){
       setState(() {});
     }
@@ -64,7 +69,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   }
 
   fetchAllUsers() async {
-    userList = await adminServices.fetchAllUsers(context);
+    userList = await userServices.fetchAllUsers(context);
     if(context.mounted){
       setState(() {});
     }
@@ -78,7 +83,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   }
 
   fetchSearchUser(String search) async {
-    userList = await adminServices.fetchSearchUser(context: context, searchQuery: search);
+    userList = await userServices.fetchSearchUser(context: context, searchQuery: search);
     if (userList != null && userList!.isNotEmpty) {
       List<Order>? tmpOrders = [];
 
@@ -385,7 +390,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                           onFieldSubmitted: (value) async {
                             if(value.trim().isNotEmpty){
                               waitingDialog(context, ()async{
-                                userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
+                                userList = await userServices.fetchSearchUser(context: context, searchQuery: value);
                                 if (userList != null && userList!.isNotEmpty) {
                                   List<Order>? tmpOrders = [];
 
@@ -413,7 +418,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                 if(!context.mounted) return;
                                 orders = await adminServices.fetchAllOrders(context);
                                 if(!context.mounted) return;
-                                userList = await adminServices.fetchAllUsers(context);
+                                userList = await userServices.fetchAllUsers(context);
                                 if(context.mounted){
                                   setState(() {});
                                 }
@@ -455,7 +460,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                           onFieldSubmitted: (value) async {
                             if(value.trim().isNotEmpty){
                               waitingDialog(context, ()async{
-                                userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
+                                userList = await userServices.fetchSearchUser(context: context, searchQuery: value);
                                 if (userList != null && userList!.isNotEmpty) {
                                   List<Order>? tmpOrders = [];
 
@@ -483,7 +488,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                                 if(!context.mounted) return;
                                 productList = await adminServices.fetchAllProducts(context);
                                 if(!context.mounted) return;
-                                userList = await adminServices.fetchAllUsers(context);
+                                userList = await userServices.fetchAllUsers(context);
                                 if(context.mounted){
                                   setState(() {});
                                 }

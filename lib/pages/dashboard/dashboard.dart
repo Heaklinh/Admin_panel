@@ -11,6 +11,8 @@ import 'package:admin_panel/pages/dashboard/widgets/overview_cards_small.dart';
 import 'package:admin_panel/pages/dashboard/widgets/revenue_info_section_large.dart';
 import 'package:admin_panel/pages/dashboard/widgets/revenue_info_section_small.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/setting/services/setting_services.dart';
+import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +31,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
   List<Order>? orderHistoryList;
   List<Order>? orderQueueList;
   List<Order>? inStorage;
+  MaintainToggle? maintainToggle;
 
   AdminServices adminServices = AdminServices();
+  SettingServices settingServices = SettingServices();
+  UserServices userServices = UserServices();
 
-  MaintainToggle? maintainToggle;
-  
   fetchMaintainToggle() async {
-    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
+    maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: false);
     if(context.mounted){
       setState(() {});
     }
@@ -58,7 +61,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 
   fetchAllUsers() async{
-    userList = await adminServices.fetchAllUsers(context);
+    userList = await userServices.fetchAllUsers(context);
     if(context.mounted){
       setState(() {});
     }

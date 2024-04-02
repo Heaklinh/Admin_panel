@@ -5,7 +5,7 @@ import 'package:admin_panel/constants/color.dart';
 import 'package:admin_panel/constants/show_snack_bar.dart';
 import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/product.dart';
-import 'package:admin_panel/services/admin_services.dart';
+import 'package:admin_panel/pages/drink/services/drink_services.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class EditProductPage extends StatefulWidget {
 }
 
 class _EditProductPageState extends State<EditProductPage> {
-  AdminServices adminServices = AdminServices();
+  DrinkServices drinkServices = DrinkServices();
 
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -33,7 +33,7 @@ class _EditProductPageState extends State<EditProductPage> {
 
   Future<void> submitForm() async {
     if(formKey.currentState!.validate()) {
-    await adminServices.editProduct(
+    await drinkServices.editProduct(
         context: context,
         id: widget.productData.id,
         name: productNameController.text,

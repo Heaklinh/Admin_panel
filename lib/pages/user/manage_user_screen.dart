@@ -6,6 +6,8 @@ import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/setting/services/setting_services.dart';
+import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -23,12 +25,15 @@ class _ManageUserPageState extends State<ManageUserPage> {
   final TextEditingController textController = TextEditingController();
 
   List<User>? userList;
-  final AdminServices adminServices = AdminServices();
   MaintainToggle? maintainToggle;
   late User userData;
+
+  final AdminServices adminServices = AdminServices();
+  final SettingServices settingServices = SettingServices();
+  final UserServices userServices = UserServices();
   
   fetchMaintainToggle() async {
-    maintainToggle = await adminServices.fetchMaintainToggle(context: context, toggle: false);
+    maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: false);
     if(context.mounted){
       setState(() {});
     }
@@ -42,14 +47,14 @@ class _ManageUserPageState extends State<ManageUserPage> {
   }
 
   fetchAllUsers() async {
-    userList = await adminServices.fetchAllUsers(context);
+    userList = await userServices.fetchAllUsers(context);
     if(context.mounted){
       setState(() {});
     }
   }
 
   Future<void> deleteUser()async{
-    await adminServices.deleteUser(
+    await userServices.deleteUser(
       context: context,
       user: userData,
       onSuccess: handleUserChanges,
@@ -202,7 +207,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                           onFieldSubmitted: (value) async {
                             if(value.trim().isNotEmpty){
                               waitingDialog(context, ()async{
-                                userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
+                                userList = await userServices.fetchSearchUser(context: context, searchQuery: value);
                                 if (userList != null && userList!.isNotEmpty) {
                                   setState(() {});
                                 }
@@ -212,7 +217,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                               , "Searching User...");
                             }else{     
                               waitingDialog(context, () async {
-                                userList = await adminServices.fetchAllUsers(context);
+                                userList = await userServices.fetchAllUsers(context);
                                 if(context.mounted){
                                   setState(() {});
                                 }
@@ -240,7 +245,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                           onFieldSubmitted: (value) async {
                             if(value.trim().isNotEmpty){
                               waitingDialog(context, ()async{
-                                userList = await adminServices.fetchSearchUser(context: context, searchQuery: value);
+                                userList = await userServices.fetchSearchUser(context: context, searchQuery: value);
                                 if (userList != null && userList!.isNotEmpty) {
                                   setState(() {});
                                 }
@@ -250,7 +255,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                               , "Searching User...");
                             }else{     
                               waitingDialog(context, () async {
-                                userList = await adminServices.fetchAllUsers(context);
+                                userList = await userServices.fetchAllUsers(context);
                                 if(context.mounted){
                                   setState(() {});
                                 }
