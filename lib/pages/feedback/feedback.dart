@@ -5,6 +5,7 @@ import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/user.dart';
+import 'package:admin_panel/pages/feedback/services/feedback_services.dart';
 import 'package:admin_panel/pages/feedback/widget/user_review_cart.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
@@ -26,6 +27,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   List<UserFeedback>? feedback;
   List<User>? userList;
   final AdminServices adminServices = AdminServices();
+  final FeedbackServices feedbackServices = FeedbackServices();
   MaintainToggle? maintainToggle;
   
   fetchMaintainToggle() async {
@@ -44,7 +46,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   fetchAllFeedback() async {
-    feedback = await adminServices.fetchAllFeedback(context);
+    feedback = await feedbackServices.fetchAllFeedback(context);
     if(context.mounted){
       setState(() {});
     }
@@ -64,7 +66,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Future<void> clearAllFeedback() async {
 
     await Future.forEach(feedback!, (UserFeedback feedbackItem) async{
-      await adminServices.deleteFeedback(
+      await feedbackServices.deleteFeedback(
         context: context, 
         feedback: feedbackItem, 
         onSuccess: _handleFeedbackDeleted

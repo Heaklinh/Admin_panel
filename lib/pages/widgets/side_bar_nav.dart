@@ -1,4 +1,5 @@
 import 'package:admin_panel/constants/color.dart';
+import 'package:admin_panel/pages/auth/services/auth_services.dart';
 import 'package:admin_panel/pages/dashboard/dashboard.dart';
 import 'package:admin_panel/pages/drink/manage_drink.dart';
 import 'package:admin_panel/pages/feedback/feedback.dart';
@@ -8,7 +9,6 @@ import 'package:admin_panel/pages/setting/settings.dart';
 import 'package:admin_panel/pages/user/manage_user_screen.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
 import 'package:admin_panel/pages/widgets/top_nav_bar.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:side_navigation/side_navigation.dart';
@@ -23,7 +23,7 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> {
 
-  AdminServices adminServices = AdminServices();
+  AuthServices authServices = AuthServices();
 
   int selectedIndex = 0;
 
@@ -44,7 +44,7 @@ class _SideBarState extends State<SideBar> {
   }
 
   void logout(){
-    adminServices.logOut(context);
+    authServices.logOut(context);
   }
 
   @override

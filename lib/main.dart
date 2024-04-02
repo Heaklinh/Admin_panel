@@ -1,6 +1,7 @@
 
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/pages/auth/authenthication.dart';
+import 'package:admin_panel/pages/auth/services/auth_services.dart';
 import 'package:admin_panel/routes.dart';
 import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
 import 'package:admin_panel/providers/user_provider.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp>{
   final AdminServices adminServices = AdminServices();
+  final AuthServices authServices = AuthServices();
 
   @override
   void initState() {
@@ -67,7 +69,7 @@ class _MyAppState extends State<MyApp>{
   }
 
   Future<void> _getUserData(BuildContext context) async {
-    final adminServices = AdminServices();
-    await adminServices.getUserData(context: context);
+    final authServices = AuthServices();
+    await authServices.getUserData(context: context);
   }
 }

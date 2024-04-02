@@ -3,7 +3,7 @@ import 'package:admin_panel/constants/show_snack_bar.dart';
 import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/feedback.dart';
 import 'package:admin_panel/models/user.dart';
-import 'package:admin_panel/services/admin_services.dart';
+import 'package:admin_panel/pages/feedback/services/feedback_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,10 +21,10 @@ class UserReviewCard extends StatelessWidget {
       required this.feedbackData,
       required this.onFeedbackDeleted});
 
-  final AdminServices adminServices = AdminServices();
+  final FeedbackServices feedbackServices = FeedbackServices();
 
   Future<void> submitForm()async{
-    await adminServices.deleteFeedback(
+    await feedbackServices.deleteFeedback(
       context: context,
       feedback: feedbackData,
       onSuccess: onFeedbackDeleted,
