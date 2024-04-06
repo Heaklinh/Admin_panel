@@ -11,7 +11,6 @@ import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +30,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
   MaintainToggle? maintainToggle;
 
   final UserServices userServices = UserServices();
-  final AdminServices adminServices = AdminServices();
   final FeedbackServices feedbackServices = FeedbackServices();
   final SettingServices settingServices = SettingServices();
   

@@ -5,8 +5,8 @@ import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/orders/services/order_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +24,11 @@ class OrderHistory extends StatefulWidget {
 
 class _OrderHistoryState extends State<OrderHistory> {
   final TextEditingController textController = TextEditingController();
-  final AdminServices adminServices = AdminServices();
+  final OrderServices orderServices = OrderServices();
   late Order orderData;
 
   Future<void> deleteOrder()async{
-    await adminServices.deleteOrder(
+    await orderServices.deleteOrder(
       context: context,
       order: orderData,
       onSuccess: widget.onOrderDeleted,
@@ -39,7 +39,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   }
 
   Future<void> refundOrder()async{
-    await adminServices.refundOrder(
+    await orderServices.refundOrder(
       context: context,
       order: orderData,
       onSuccess: widget.onOrderDeleted,
@@ -52,7 +52,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   Future<void> clearAllOrder() async {
 
     await Future.forEach(widget.orderHistoryList!, (Order order) async{
-      await adminServices.deleteOrder(
+      await orderServices.deleteOrder(
         context: context, 
         order: order, 
         onSuccess: widget.onOrderDeleted

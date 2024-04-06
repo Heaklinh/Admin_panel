@@ -6,12 +6,13 @@ import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/order.dart';
 import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/user.dart';
+import 'package:admin_panel/pages/drink/services/drink_services.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/orders/services/order_services.dart';
 import 'package:admin_panel/pages/orders/widgets/drop_down.dart';
 import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +34,9 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   late Order orderData;
 
   final UserServices userServices = UserServices();
-  final AdminServices adminServices = AdminServices();
+  final OrderServices orderServices = OrderServices();
   final SettingServices settingServices = SettingServices();
+  final DrinkServices drinkServices = DrinkServices();
   
   fetchMaintainToggle() async {
     maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: false);
@@ -62,7 +64,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   }
 
   fetchAllProducts() async {
-    productList = await adminServices.fetchAllProducts(context);
+    productList = await drinkServices.fetchAllProducts(context);
     if(context.mounted){
       setState(() {});
     }
@@ -76,7 +78,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   }
 
   fetchAllOrders() async {
-    orders = await adminServices.fetchAllOrders(context);
+    orders = await orderServices.fetchAllOrders(context);
     if(context.mounted){
       setState(() {});
     }
@@ -125,7 +127,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   }
 
   Future<void> deleteOrder()async{
-    await adminServices.deleteOrder(
+    await orderServices.deleteOrder(
       context: context,
       order: orderData,
       onSuccess: handleOrderChanged,
@@ -136,7 +138,7 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
   }
 
   Future<void> refundOrder()async{
-    await adminServices.refundOrder(
+    await orderServices.refundOrder(
       context: context,
       order: orderData,
       onSuccess: handleOrderChanged,
@@ -414,9 +416,9 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                               , "Searching User...");
                             }else{     
                               waitingDialog(context, () async {
-                                productList = await adminServices.fetchAllProducts(context);
+                                productList = await drinkServices.fetchAllProducts(context);
                                 if(!context.mounted) return;
-                                orders = await adminServices.fetchAllOrders(context);
+                                orders = await orderServices.fetchAllOrders(context);
                                 if(!context.mounted) return;
                                 userList = await userServices.fetchAllUsers(context);
                                 if(context.mounted){
@@ -484,9 +486,9 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
                               , "Searching User...");
                             }else{     
                               waitingDialog(context, () async {
-                                orders = await adminServices.fetchAllOrders(context);
+                                orders = await orderServices.fetchAllOrders(context);
                                 if(!context.mounted) return;
-                                productList = await adminServices.fetchAllProducts(context);
+                                productList = await drinkServices.fetchAllProducts(context);
                                 if(!context.mounted) return;
                                 userList = await userServices.fetchAllUsers(context);
                                 if(context.mounted){

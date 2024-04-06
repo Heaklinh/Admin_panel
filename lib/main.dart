@@ -2,10 +2,10 @@
 import 'package:admin_panel/common/widgets/loader.dart';
 import 'package:admin_panel/pages/auth/authenthication.dart';
 import 'package:admin_panel/pages/auth/services/auth_services.dart';
+import 'package:admin_panel/pages/orders/services/order_services.dart';
 import 'package:admin_panel/routes.dart';
 import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
 import 'package:admin_panel/providers/user_provider.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +31,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp>{
-  final AdminServices adminServices = AdminServices();
+  final OrderServices orderServices = OrderServices();
   final AuthServices authServices = AuthServices();
 
   @override

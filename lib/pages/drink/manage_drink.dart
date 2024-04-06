@@ -9,7 +9,6 @@ import 'package:admin_panel/pages/drink/services/drink_services.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
 import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,7 @@ class ManageDrink extends StatefulWidget {
 
 class _ManageDrinkState extends State<ManageDrink> {
   List<Product>? products;
-  final AdminServices adminServices = AdminServices();
+  
   final DrinkServices drinkServices = DrinkServices();
   final SettingServices settingServices = SettingServices();
   late Product selectedProduct;
@@ -37,7 +36,7 @@ class _ManageDrinkState extends State<ManageDrink> {
   }
 
   fetchAllProducts() async {
-    products = await adminServices.fetchAllProducts(context);
+    products = await drinkServices.fetchAllProducts(context);
     if(context.mounted){
       setState(() {});
     }

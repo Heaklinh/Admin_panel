@@ -10,11 +10,12 @@ import 'package:admin_panel/pages/dashboard/widgets/overview_cards_medium.dart';
 import 'package:admin_panel/pages/dashboard/widgets/overview_cards_small.dart';
 import 'package:admin_panel/pages/dashboard/widgets/revenue_info_section_large.dart';
 import 'package:admin_panel/pages/dashboard/widgets/revenue_info_section_small.dart';
+import 'package:admin_panel/pages/drink/services/drink_services.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/orders/services/order_services.dart';
 import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboard extends StatefulWidget {
@@ -33,9 +34,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
   List<Order>? inStorage;
   MaintainToggle? maintainToggle;
 
-  AdminServices adminServices = AdminServices();
+  OrderServices orderServices = OrderServices();
   SettingServices settingServices = SettingServices();
   UserServices userServices = UserServices();
+  DrinkServices drinkServices = DrinkServices();
 
   fetchMaintainToggle() async {
     maintainToggle = await settingServices.fetchMaintainToggle(context: context, toggle: false);
@@ -54,7 +56,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 
   fetchAllProducts() async {
-    productList = await adminServices.fetchAllProducts(context);
+    productList = await drinkServices.fetchAllProducts(context);
     if(context.mounted){
       setState(() {});
     }
@@ -69,7 +71,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   
   fetchAllOrders() async {
     List<Order>? tmpOrders = [];
-    orderList = await adminServices.fetchAllOrders(context);
+    orderList = await orderServices.fetchAllOrders(context);
     for(int i = 0; i < orderList!.length; i++){
       if(orderList![i].isRefunded == false){
         tmpOrders.add(orderList![i]);

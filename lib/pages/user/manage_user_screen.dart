@@ -6,10 +6,10 @@ import 'package:admin_panel/constants/waiting_dialog.dart';
 import 'package:admin_panel/models/maintain_toggle.dart';
 import 'package:admin_panel/models/user.dart';
 import 'package:admin_panel/pages/helpers/responsiveness.dart';
+import 'package:admin_panel/pages/orders/services/order_services.dart';
 import 'package:admin_panel/pages/setting/services/setting_services.dart';
 import 'package:admin_panel/pages/user/services/user_services.dart';
 import 'package:admin_panel/pages/widgets/custom_text.dart';
-import 'package:admin_panel/services/admin_services.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
   MaintainToggle? maintainToggle;
   late User userData;
 
-  final AdminServices adminServices = AdminServices();
+  final OrderServices orderServices = OrderServices();
   final SettingServices settingServices = SettingServices();
   final UserServices userServices = UserServices();
   
