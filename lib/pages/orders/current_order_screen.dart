@@ -132,9 +132,10 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
       order: orderData,
       onSuccess: handleOrderChanged,
     );
-    if(!context.mounted) return;
-    Navigator.pop(context);
-    showSnackBar(context, "Order deleted successfully");
+    if(mounted){  
+      Navigator.pop(context);
+      showSnackBar(context, "Order deleted successfully");
+    }
   }
 
   Future<void> refundOrder()async{
@@ -143,9 +144,10 @@ class _CurrentOrderPageState extends State<CurrentOrderPage> {
       order: orderData,
       onSuccess: handleOrderChanged,
     );
-    if(!context.mounted) return;
-    Navigator.pop(context);
-    showSnackBar(context, "Order refunded successfully");
+    if(mounted){  
+      Navigator.pop(context);
+      showSnackBar(context, "Order refunded successfully");
+    }
   }
 
   @override

@@ -79,8 +79,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
     setState(() {
       Navigator.pop(context);
     });
-    if(!context.mounted) return;
-    showSnackBar(context, "All feedback has been clear");
+    if(mounted){
+      showSnackBar(context, "All feedback has been clear");
+    }
   }
 
   @override

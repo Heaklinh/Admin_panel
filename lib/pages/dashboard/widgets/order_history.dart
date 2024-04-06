@@ -33,9 +33,10 @@ class _OrderHistoryState extends State<OrderHistory> {
       order: orderData,
       onSuccess: widget.onOrderDeleted,
     );
-    if(!context.mounted) return;
-    Navigator.pop(context);
-    showSnackBar(context, "Order deleted successfully");
+    if(mounted){
+      Navigator.pop(context);
+      showSnackBar(context, "Order deleted successfully");
+    }
   }
 
   Future<void> refundOrder()async{
@@ -44,9 +45,10 @@ class _OrderHistoryState extends State<OrderHistory> {
       order: orderData,
       onSuccess: widget.onOrderDeleted,
     );
-    if(!context.mounted) return;
-    Navigator.pop(context);
-    showSnackBar(context, "Order refunded successfully");
+    if(mounted){
+      Navigator.pop(context);
+      showSnackBar(context, "Order refunded successfully");
+    }
   }
 
   Future<void> clearAllOrder() async {
@@ -62,8 +64,9 @@ class _OrderHistoryState extends State<OrderHistory> {
     setState(() {
       Navigator.pop(context);
     });
-    if(!context.mounted) return;
-    showSnackBar(context, "All history order has been clear");
+    if(mounted){
+      showSnackBar(context, "All history order has been clear");
+    }
   }
 
   @override

@@ -59,9 +59,10 @@ class _ManageUserPageState extends State<ManageUserPage> {
       user: userData,
       onSuccess: handleUserChanges,
     );
-    if(!context.mounted) return;
-    Navigator.pop(context);
-    showSnackBar(context, "User deleted successfully");
+    if(mounted){  
+      Navigator.pop(context);
+      showSnackBar(context, "User deleted successfully");
+    }
   }
 
   void handleUserChanges() {
