@@ -1,6 +1,6 @@
 
-import 'package:admin_panel/pages/auth/authenthication.dart';
-import 'package:admin_panel/pages/widgets/side_bar_nav.dart';
+import 'package:admin_panel/features/auth/screens/authenthication.dart';
+import 'package:admin_panel/common/widgets/side_bar_nav.dart';
 import 'package:admin_panel/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

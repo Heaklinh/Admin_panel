@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
         )),
       ),
       validator: (val) {
-        if (val == null || val.isEmpty) {
+        if (val == null || val.trim().isEmpty) {
           return 'Enter your $hintText';
         }
         if (hintText == "Price") {
