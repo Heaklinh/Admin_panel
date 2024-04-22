@@ -14,8 +14,8 @@ class User {
   final DateTime? lastRequestedOTP;
   String? profile;
   List<String?>? devices;
-
-  User( 
+  
+  User(
       {required this.id,
       required this.name,
       required this.email,
